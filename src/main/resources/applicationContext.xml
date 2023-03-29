@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+	<beans  
+        xmlns="http://www.springframework.org/schema/beans"  
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+        xmlns:p="http://www.springframework.org/schema/p"  
+        xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">  
+      
+      	<!-- property bean -->
+    	<bean id="studentbean" class="com.inexture.springCore.Student">  
+    		<property name="name" value="Vijay Daraji"></property>  
+    	</bean>  
+    	
+    	<!-- constructor bean -->
+    	<bean id="teacherbean" class="com.inexture.springCore.Teacher">
+    		<constructor-arg type="int" value="101"></constructor-arg>
+    		<constructor-arg type="java.lang.String" value="vijay"></constructor-arg>
+    	</bean>
+    	
+    	<!-- collection for beans -->
+    	<bean id="subjectsbean" class="com.inexture.springCore.Subjects"> 
+    		<property name="subjectNames">
+    			<list>
+    				 <value>Python</value>
+    				 <value>Java</value>
+    				 <value>C</value>
+    			</list>
+    			
+    		</property>
+    	</bean>
+    	
+    	<!-- alias bean -->
+    	<alias name="subjectsbean" alias="subjects"/>
+    	
+    	<!-- refer to other bean -->
+    	<bean id="refer-bean" class="com.inexture.springCore.Subjects">
+	    	<property name="student">
+	                <ref bean="studentbean" />
+	    	</property>	
+    	</bean>
+    	
+    	<!-- Outer bean -->
+    	<bean id="inner-bean" class="com.inexture.springCore.Subjects">
+    		<property name="student">
+    		<!-- Inner bean -->
+    			<bean class="com.inexture.springCore.Student"> 
+    				<property name="name" value="Dhaval Panchal"></property>
+    			</bean>
+    		</property>	
+    	</bean>
+    	
+    	<bean id="byName-bean" class="com.inexture.springCore.Subjects" autowire="byName"></bean>
+      	<bean id="student" class="com.inexture.springCore.Student">  
+    		<property name="name" value="Vijay Daraji"></property>  
+    	</bean>
+    	
+    	<!-- <bean id="byContructor-bean" class="com.inexture.springCore.Subjects" autowire="constructor"></bean> -->
+    	
+    	<!-- PropertyPlaceholderConfigurer -->
+    	<bean id="jdbcproperty" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    		<property name="location" value="classpath:jdbc.properties"></property>
+    	</bean>
+    	
+    	<!-- use PropertyPlaceholderConfigurer -->
+    	<bean id="jdbc" class="com.inexture.springCore.JdbcExample">
+    		<property name="url" value="${jdbc.url}"></property>
+    		<property name="username" value="${jdbc.username}"></property>
+    		<property name="password" value="${jdbc.password}"></property>
+    	</bean>
+    	
+    	<!-- BeanPostProcessor -->
+    	<!-- 
+    	<bean id="customBeanPostProcessor" class="com.inexture.springCore.CustomBeanPostProcessor"></bean>
+    	 -->
+    	
+    	<!-- visible in console -->
+    	<!-- init and destroy method -->
+    	<bean id="init-destroy" class="com.inexture.springCore.Teacher" init-method="initBean" destroy-method="destroyBean"></bean>
+    	
+    	<!-- Bean scope default singleton -->
+    	<bean id="message-singleton" class="com.inexture.springCore.MessageService" scope="singleton"></bean>
+    	
+    	<!-- scope - prototype  -->
+    	<bean id="message-prototype" class="com.inexture.springCore.MessageService" scope="prototype"></bean>
+    	
+    	<!-- console because  we console-->
+    	<!-- BeanNameAware -->
+    	<bean id="myBook" class="com.inexture.springCore.Book">
+	       <property name="bookName" value="Java"></property>  
+	    </bean>
+	    
+	    <bean id="appContext" class="com.inexture.springCore.ApplicationContextAwareTest"></bean>
+	    
+	    <bean id="initializing-disposible" class="com.inexture.springCore.MessageImpl" >
+	    	<property name="message" value="hello"></property>  
+	    </bean>
+    </beans>  
+ 
+    
+
+
+
+
+    
