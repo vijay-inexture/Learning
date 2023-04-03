@@ -62,19 +62,7 @@ class Pattern{
 			
 			System.out.println("you choose option: "+userChoice+"\n");
 			
-			switch(userChoice) {
-			
-				case 1:	
-					clockwiseMatrix(size);
-					break;
-				case 2:	
-					antiClockwiseMatrix(size);
-					break;
-				default: 
-					System.out.println("Enter valid choice");
-					break;
-						
-			}
+			matrix(size, userChoice);
 			
 			//ask user for exit
 			System.out.println("\nYou want to exit? (y/n)");
@@ -90,7 +78,7 @@ class Pattern{
 		scanner.close();	
 		
 	}
-	
+
 	public static boolean isNumber(String input) {
 		try {
 		    int intValue = Integer.parseInt(input);
@@ -101,8 +89,7 @@ class Pattern{
 		}
 	}
 
-	public static void clockwiseMatrix(int size) {
-		System.out.println("clockwiseMatrix size: "+size);
+	public static void matrix(int size,int userChoice) {
 		int startRow = 0;
 		int startCol = 0;
 		int endRow = size;
@@ -110,12 +97,35 @@ class Pattern{
 		int num = 1;
 		int array[][] = new int[size][size];
 		
-		while(startRow<endRow && startCol<endCol) {
+		try {
+			if(userChoice==1) {
+				array = clockwiseMatrix(startRow, startCol, endRow, endCol, num, array);
+			}else {
+				array = antiClockwiseMatrix(startRow, startCol, endRow, endCol, num, array);
+			}
+		} catch (Exception e) {
+			System.out.println("Issue with Generating Matrix!");
+			System.out.println(e.getMessage());
+		}
+		
+		try {
+			printMatrix(array, size);
+		} catch (Exception e) {
+			System.out.println("Issue with Displaying Matrix!");
+			System.out.println(e.getMessage());
+		}
+		
+	}
+	
+	public static int[][] clockwiseMatrix(int startRow, int startCol, int endRow, int endCol, int num,
+			int[][] array) {
+		
+		if(startRow<endRow && startCol<endCol) {
 			
-		     // Print the first row from the remaining rows in top
-		     for (int col = startCol; col < endCol; col++) {
-			array[startRow][col] = num;
-			num++;
+		    // Print the first row from the remaining rows in top
+		    for (int col = startCol; col < endCol; col++) {
+				array[startRow][col] = num;
+				num++;
 		    }
 		    startRow++;
 		    
@@ -145,23 +155,15 @@ class Pattern{
 		        }
 		        startCol++;
 		    }
+		    
+		    clockwiseMatrix(startRow, startCol, endRow, endCol, num, array);
 		}
-		
-		//print matrix
-		printMatrix(array, size);
-		
+		return array;
 	}
-	
-	public static void antiClockwiseMatrix(int size) {
-		System.out.println("Anti-clockwiseMatrix size: "+size);
-		int startRow = 0;
-		int startCol = 0;
-		int endRow = size;
-		int endCol = size;
-		int num = 1;
-		int array[][] = new int[size][size];
-		
-		while(startRow<endRow && startCol<endCol) {
+
+	public static int[][] antiClockwiseMatrix(int startRow, int startCol, int endRow, int endCol, int num,
+			int[][] array) {
+		if(startRow<endRow && startCol<endCol) {
 			
 			// Print the first row from the remaining rows in top
 			for(int col=endCol-1;col>=startCol;col--) {
@@ -195,28 +197,30 @@ class Pattern{
 				endCol--;
 			}
 			
+			antiClockwiseMatrix(startRow, startCol, endRow, endCol, num, array);
 		}
-		
-		//print matrix
-		printMatrix(array, size);
-		
+		return array;
 	}
-
+	
 	public static void printMatrix(int[][] array, int size) {
 		int maxLength = String.valueOf(size*size).length();
 		for(int row=0;row<size;row++) {
 			for(int col=0;col<size;col++) {
+				
+				//add extra space before matrix element for proper visibility
 				int valueInt = array[row][col];
 				String valueString = String.valueOf(valueInt);
 				int length = valueString.length();
-				while(length<maxLength) {
-					valueString = " "+valueString;
-					length++;
+				if(length<maxLength) {
+					valueString = String.format("%" + (maxLength - length) + "s", " ") + valueString;
 				}
+				
 				System.out.print(valueString+" ");
 			}
 			System.out.println();
 		}			
 	}
+
 }
+
 
