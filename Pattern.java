@@ -203,12 +203,20 @@ class Pattern{
 	}
 
 	public static void printMatrix(int[][] array, int size) {
+		int maxLength = String.valueOf(size*size).length();
 		for(int row=0;row<size;row++) {
 			for(int col=0;col<size;col++) {
-				System.out.print(array[row][col]+" ");
+				int valueInt = array[row][col];
+				String valueString = String.valueOf(valueInt);
+				int length = valueString.length();
+				while(length<maxLength) {
+					valueString = " "+valueString;
+					length++;
+				}
+				System.out.print(valueString+" ");
 			}
 			System.out.println();
-		}		
+		}			
 	}
 }
 
