@@ -5,76 +5,62 @@ class Pattern{
 	
 		Scanner scanner = new Scanner(System.in);
 		boolean flag = true;
-		boolean invalidInput = false;
+		boolean invalidSize = false;
+		boolean invalidChoice = false;
 		String input;
 		String choice;
 		String userWantExit;
 		int size;
 		int userChoice = 0;
 		
-		//check until user want to exit
-		while(flag){
-
-			//check until user provide valid input
-			do{
-				
-				System.out.println("Enter number: ");
-				input = scanner.nextLine();
-				
-				//check if user enter Invalid number
-				if(!isNumber(input)) {
-					invalidInput = true;
+		//iterate if user provide invalid input or want to use again
+		do {
+			System.out.println("Enter size: ");
+			input = scanner.nextLine();
+			
+			System.out.println("Enter your choice");
+			System.out.println("1. Clockwise Matrix (Enter 1)");
+			System.out.println("2. Anti-clockwise Matrix (Enter 2)");
+			choice = scanner.nextLine();
+			
+			//check user provided data is valid or not
+			if(!isNumber(input)) {
+				invalidSize = true;
+				System.out.println("Invalid Size!");
+			}
+			else if(!isNumber(choice)) {
+				invalidChoice = true;
+				System.out.println("Invalid Choice!");
+			}else {
+				userChoice = Integer.parseInt(choice);
+				if(userChoice==1 || userChoice==2) {
+					invalidSize = false;
+					invalidChoice = false;
 				}else {
-					invalidInput = false;
+					invalidChoice = true;
+					System.out.println("Invalid Choice!");
 				}
-				
-			}while(invalidInput);
-			
-			
-			size = Integer.parseInt(input); 
-		
-			System.out.println("you enter number: "+size+"\n");
-			
-			//check until user provide valid choice
-			do {
-				System.out.println("Enter your choice");
-				System.out.println("1. Clockwise Matrix (Enter 1)");
-				System.out.println("2. Anti-clockwise Matrix (Enter 2)");
-				
-				choice = scanner.nextLine();
-				
-				//check if user enter Invalid number
-				if(!isNumber(choice)) {
-					invalidInput = true;
-					System.out.println("Please enter valid Choice!");
-				}else {
-					userChoice = Integer.parseInt(choice);
-					if(userChoice==1 || userChoice==2) {
-						invalidInput = false;
-					}else {
-						invalidInput = true;
-						System.out.println("Please enter valid Choice!");
-					}
-				}
-				
-			}while(invalidInput);
-			
-			
-			System.out.println("you choose option: "+userChoice+"\n");
-			
-			matrix(size, userChoice);
-			
-			//ask user for exit
-			System.out.println("\nYou want to exit? (y/n)");
-			userWantExit = scanner.nextLine();
-			
-			if(userWantExit.equals("Y") || userWantExit.equals("y")) {
-				System.out.println("-------> Exit from system");
-				System.out.println("-------> Thank you");
-				flag = false;	
 			}
 			
-		}
+			if(!invalidSize && !invalidChoice) {
+				size = Integer.parseInt(input); 
+				System.out.println("you enter number: "+size+"\n");
+				System.out.println("you choose option: "+userChoice+"\n");
+				
+				matrix(size, userChoice);
+				
+				//ask user for exit
+				System.out.println("\nYou want to exit? (y/n)");
+				userWantExit = scanner.nextLine();
+				
+				if(userWantExit.equals("Y") || userWantExit.equals("y")) {
+					System.out.println("-------> Exit from system");
+					System.out.println("-------> Thank you");
+					flag = false;	
+				}
+			}
+		}while(invalidSize || invalidChoice || flag);
+		
 		scanner.close();	
 		
 	}
@@ -84,7 +70,6 @@ class Pattern{
 		    int intValue = Integer.parseInt(input);
 		    return true;
 		} catch (NumberFormatException e) {
-			System.out.println(input+" is Invalid input, Please enter valid input! \n");
 		    return false;
 		}
 	}
@@ -222,5 +207,6 @@ class Pattern{
 	}
 
 }
+
 
 
