@@ -23,15 +23,18 @@ public class Test {
 //		Subjects innerBean = context.getBean("inner-bean", Subjects.class);
 //		innerBean.displayStudent();
 		
+//		Subjects byName = context.getBean("byName-bean", Subjects.class);
+//		byName.displayStudent();
+		
+//		Student byType = context.getBean("byType-bean", Student.class);
+//		byType.displayInfo();
+		
 //		Subjects byContructor = context.getBean("byContructor-bean", Subjects.class);
 //		byContructor.displayStudent();
 		
 //		CustomBeanPostProcessor beanPostProcessor = context.getBean("customBeanPostProcessor", CustomBeanPostProcessor.class);
 //		Teacher initDestroy = context.getBean("init-destroy", Teacher.class); 
 		
-//		Subjects byName = context.getBean("byName-bean", Subjects.class);
-//		byName.displayStudent();
-//		
 //		JdbcExample jdbc = context.getBean("jdbc", JdbcExample.class);
 //		jdbc.display();
 //
@@ -55,10 +58,30 @@ public class Test {
 //		ApplicationContext context2 = appContext.getContext();
 //		Book book = context2.getBean("myBook", Book.class);
 		
-		MessageImpl initDispose = context.getBean("initializing-disposible",MessageImpl.class);
+//		MessageImpl initDispose = context.getBean("initializing-disposible",MessageImpl.class);
 		
+//		prototype inside single 
+//		lookup method
+//		SingletonA singletonA1 = context.getBean("singletonA", SingletonA.class);
+//		PrototypeB prototypeB1 = singletonA1.getPrototypeB();
+//		SingletonA singletonA2 = context.getBean("singletonA", SingletonA.class);
+//		PrototypeB prototypeB2 = singletonA2.getPrototypeB();
+//		System.out.println(prototypeB1.equals(prototypeB2));
 		
+//		prototype inside single 
+//		AppContextAware
+//		SingletonApp singletonApp = context.getBean("singletonApp", SingletonApp.class);
+//		PrototypeB prototypeB3 = singletonApp.getPrototypeB();
+//		SingletonApp singletonApp2 = context.getBean("singletonApp", SingletonApp.class);
+//		PrototypeB prototypeB4 = singletonApp2.getPrototypeB();
+//		System.out.println(prototypeB3.equals(prototypeB4));
 		
+//		singleton inside prototype
+		PrototypeABean prototypeABean1 = context.getBean("prototypeA-Bean", PrototypeABean.class);
+		SingletonBBean singletonBBean1 = prototypeABean1.getSingletonABean();
+		PrototypeABean prototypeABean2 = context.getBean("prototypeA-Bean", PrototypeABean.class);
+		SingletonBBean singletonBBean2 = prototypeABean2.getSingletonABean();
+		System.out.println(singletonBBean1.equals(singletonBBean2));
 		
 		//way 2 - provide proper path
 //		String path = "/home/root391/eclipse-workspace/Spring-core-application/src/main/resources/applicationContext.xml";

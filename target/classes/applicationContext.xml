@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>  
 	<beans  
+		default-init-method="customInit" default-destroy-method="customDestroy"
         xmlns="http://www.springframework.org/schema/beans"  
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
         xmlns:p="http://www.springframework.org/schema/p"  
         xsi:schemaLocation="http://www.springframework.org/schema/beans  
-                   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">  
+                   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+                   
+                   >  
       
       	<!-- property bean -->
     	<bean id="studentbean" class="com.inexture.springCore.Student">  
@@ -49,13 +52,18 @@
     		</property>	
     	</bean>
     	
+    	<!-- autowired by name -->
     	<bean id="byName-bean" class="com.inexture.springCore.Subjects" autowire="byName"></bean>
-      	<bean id="student" class="com.inexture.springCore.Student">  
+      	<bean id="byType-bean" class="com.inexture.springCore.Student" autowire="byType">  
     		<property name="name" value="Vijay Daraji"></property>  
     	</bean>
     	
+    	<!-- autowired by contructor -->
     	<!-- <bean id="byContructor-bean" class="com.inexture.springCore.Subjects" autowire="constructor"></bean> -->
     	
+    	<bean id="student" class="com.inexture.springCore.Student">  
+    		<property name="name" value="Vijay Daraji"></property>  
+    	</bean>
     	<!-- PropertyPlaceholderConfigurer -->
     	<bean id="jdbcproperty" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     		<property name="location" value="classpath:jdbc.properties"></property>
@@ -94,6 +102,27 @@
 	    <bean id="initializing-disposible" class="com.inexture.springCore.MessageImpl" >
 	    	<property name="message" value="hello"></property>  
 	    </bean>
+	    
+	    <!-- lifecycle methods - init and destroy -->
+	    <bean id="demoBean" class="com.inexture.springCore.DemoBean"></bean> 
+	    
+	    <!-- prototype bean inside singleton -->
+	    <!-- work like actual prototype by using LOOKUP method -->
+	    <bean id="singletonA" class="com.inexture.springCore.SingletonA" autowire="constructor">
+	    	 <lookup-method name="getPrototypeB" bean="prototypeB" />
+	    </bean>
+	    <bean id="prototypeB" class="com.inexture.springCore.PrototypeB" scope="prototype" ></bean>
+	    
+	    <!-- work like actual prototype by using AppContextAware method -->
+	    <bean id="singletonApp" class="com.inexture.springCore.SingletonApp" autowire="constructor"></bean>
+	    
+	    <!-- singleton bean inside prototype -->
+	    <bean id="prototypeA-Bean" class="com.inexture.springCore.PrototypeABean" scope="prototype" autowire="constructor"></bean>
+	    <bean id="singletonBBean" class="com.inexture.springCore.SingletonBBean" ></bean>
+	    
+	    
+	    
+	    
     </beans>  
  
     
