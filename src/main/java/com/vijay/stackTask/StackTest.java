@@ -11,16 +11,19 @@ public class StackTest {
 		Stack stack = context.getBean("stackBean", Stack.class);  
 		
 		Scanner sc = new Scanner(System.in);
+		
 		boolean flag = true;
 		String userChoice;
 		int choice = 0;
 		
+		//take valid size from user 
 		int size;
 		boolean invalidInput = false;
 		do {
 			System.out.println("\nEnter Stack size: ");
 			String input = sc.nextLine();
 			
+			//check user entered size valid or not
 			try {
 			    size = Integer.parseInt(input);
 			    stack.setStack(size);
@@ -32,6 +35,7 @@ public class StackTest {
 			
 		}while(invalidInput);
 		
+		//iterate until user want to exit
 		while(flag) {
 			
 			System.out.println("\n1. for push");
@@ -44,14 +48,16 @@ public class StackTest {
 			System.out.println("Please enter youe choice: ");
 			userChoice = sc.nextLine();
 			
+			//check user entered choice valid or not
 			if(isNumber(userChoice)) {
 				choice = Integer.parseInt(userChoice);
-			    invalidInput = false;
+				invalidInput = false;
 			}else {
 				System.out.println("Invalid Input!, Please Enter Valid choice.");
 				invalidInput = true;
 			}
 			
+			//if choice is valid then only it will execute
 			if(!invalidInput) {
 				switch(choice) {
 												
@@ -89,7 +95,8 @@ public class StackTest {
 							}
 							break;
 							
-					case 5: System.out.println("enter position for pop");
+					case 5: 
+							System.out.println("enter position for pop");
 							int pos = sc.nextInt();
 							stack.pop(pos);
 							break;
@@ -99,7 +106,8 @@ public class StackTest {
 							System.out.println("Exit from system");
 							break;
 					
-					default: System.out.println("please enter valid choice");
+					default: 
+							System.out.println("please enter valid choice");
 							break;
 					
 				}

@@ -63,7 +63,7 @@ public class Stack {
 	
 	public void pop(int pos) {
 		if(pos>top) {
-			System.out.println("Element not Exist at possition:"+pos);
+			System.out.println("Element not Exist at position:"+pos);
 		}else {
 			int popEl = arr[pos];
 			while(pos<top) {
