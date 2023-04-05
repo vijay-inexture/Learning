@@ -40,10 +40,11 @@ public class StackTest {
 			
 			System.out.println("\n1. for push");
 			System.out.println("2. for pop");
-			System.out.println("3. for Display");
-			System.out.println("4. for push from specific position");
-			System.out.println("5. for pop from specific position");
-			System.out.println("6. for exit");
+			System.out.println("3. for peak");
+			System.out.println("4. for Display");
+			System.out.println("5. for push from specific position");
+			System.out.println("6. for pop from specific position");
+			System.out.println("7. for exit");
 			
 			System.out.println("Please enter youe choice: ");
 			userChoice = sc.nextLine();
@@ -77,10 +78,14 @@ public class StackTest {
 							break;
 							
 					case 3: 
-							stack.display();
+							stack.peek();
 							break;
 							
 					case 4: 
+							stack.display();
+							break;
+							
+					case 5: 
 							System.out.println("enter value to push");
 							String pushValueStr2 = sc.nextLine();
 							System.out.println("enter position for push");
@@ -95,13 +100,18 @@ public class StackTest {
 							}
 							break;
 							
-					case 5: 
+					case 6: 
 							System.out.println("enter position for pop");
-							int pos = sc.nextInt();
-							stack.pop(pos);
+							String indexString = sc.nextLine();
+							if(isNumber(indexString)) {
+								int pos = Integer.parseInt(indexString);
+								stack.pop(pos);
+							}else {
+								System.out.println("Invalid Input!, Please Enter Valid Value.");
+							}
 							break;
 						
-					case 6: 
+					case 7: 
 							flag = false;
 							System.out.println("Exit from system");
 							break;

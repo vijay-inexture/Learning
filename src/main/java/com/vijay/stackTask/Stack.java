@@ -51,6 +51,15 @@ public class Stack {
 		
 	}
 	
+	public void peek() {
+		if(isEmpty()) {
+			System.out.println("Stack Empty");
+		}
+		else {
+			System.out.println("peek: "+arr[top]);
+		}
+	}
+	
 	public void display() {
 		if(isEmpty()) {
 			System.out.println("Stack is empty!");
