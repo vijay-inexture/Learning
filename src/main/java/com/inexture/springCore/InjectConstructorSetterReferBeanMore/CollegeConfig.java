@@ -1,4 +1,4 @@
-package com.inexture.springCore.bean;
+package com.inexture.springCore.InjectConstructorSetterReferBeanMore;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,8 @@ public class CollegeConfig {
 		return new College(principalBean());
 	}
 	
-	//setter injection
+	//setter injection 
+	//refer to other bean
 	@Bean
 	public College collegeBeanSetter() {
 		College college = new College();

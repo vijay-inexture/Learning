@@ -1,4 +1,4 @@
-package com.inexture.springCore.bean;
+package com.inexture.springCore.InjectConstructorSetterReferBeanMore;
 
 import org.springframework.stereotype.Component;
 
