@@ -1,5 +1,7 @@
 package com.learning.springMvc.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void createUser(User user) {
 		userDao.save(user);
+	}
+
+	@Override
+	public List<User> getAllUser() {
+		return userDao.findAll();
+	}
+
+	@Override
+	public User getUserByEmail(String email) {
+		return userDao.findByEmail(email);
 	}
 
 }
