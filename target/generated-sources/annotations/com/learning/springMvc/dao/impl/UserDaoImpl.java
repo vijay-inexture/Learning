@@ -19,10 +19,28 @@ public class UserDaoImpl implements UserDao {
 	
 	@Override
 	public User findByEmail(String email) {
-		System.out.println(email);
-		Long id = 1L;
 		String sql = "SELECT id, name, email, role FROM user WHERE email = ?";
         User user = jdbcTemplate.query(sql, new Object[]{email}, 
+        	rs -> {
+            if (rs.next()) {
+            	
+                User userData = new User();
+                userData.setId(rs.getLong("id"));
+                userData.setName(rs.getString("name"));
+                userData.setEmail(rs.getString("email"));
+                userData.setRole(rs.getString("role"));
+                return userData;
+            } else {
+                return null;
+            }
+        });
+        return user;
+	}
+	
+	@Override
+	public User findById(Long id) {
+		String sql = "SELECT id, name, email, role FROM user WHERE id = ?";
+        User user = jdbcTemplate.query(sql, new Object[]{id}, 
         	rs -> {
             if (rs.next()) {
             	
@@ -75,5 +93,6 @@ public class UserDaoImpl implements UserDao {
 		// TODO Auto-generated method stub
 
 	}
+
 
 }

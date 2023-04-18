@@ -3,17 +3,18 @@ package com.learning.springMvc.model;
 public class Address {
 	
 	private Long id;
-	private String streat;
+	private String street;
 	private String city;
+	private Long userId;
 	
 	public Address() {
 		super();
 	}
-	
-	public Address(Long id, String streat, String city) {
+
+	public Address(Long id, String street, String city) {
 		super();
 		this.id = id;
-		this.streat = streat;
+		this.street = street;
 		this.city = city;
 	}
 
@@ -25,12 +26,12 @@ public class Address {
 		this.id = id;
 	}
 
-	public String getStreat() {
-		return streat;
+	public String getStreet() {
+		return street;
 	}
 
-	public void setStreat(String streat) {
-		this.streat = streat;
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
 	public String getCity() {
@@ -39,6 +40,14 @@ public class Address {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 	
 	
