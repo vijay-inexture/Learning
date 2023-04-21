@@ -2,11 +2,19 @@ package com.learning.springMvc.model;
 
 import java.util.List;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+
 public class User {
 	
 	private Long id;
+	@NotNull
 	private String name;
+	@NotNull
+	@Email
 	private String email;
+	private String password;
+	@NotNull
 	private String role;
 	private List<Address> addresses;
 	
@@ -14,12 +22,15 @@ public class User {
 		super();
 	}
 
-	public User(Long id, String name, String email, String role) {
+	public User(Long id, @NotNull String name, @NotNull @Email String email, String password, @NotNull String role,
+			List<Address> addresses) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
+		this.password = password;
 		this.role = role;
+		this.addresses = addresses;
 	}
 
 	public Long getId() {
@@ -62,5 +73,13 @@ public class User {
 		this.addresses = addresses;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
 	
 }

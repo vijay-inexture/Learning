@@ -8,6 +8,12 @@ public interface AddressDao {
 	
 	public void save(Address address);
 
-	public List<Address> findAllById(Long id);
+	public List<Address> findAllByUserId(Long id);
+
+	public Address findById(Long addressId);
+
+	public void updateAddress(Address addressEntity);
+
+	public void deleteById(Long addressId);
 
 }

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Update Address Form</title>
+</head>
+<body>
+    <h1>Update Address Form</h1>
+    <form action="" th:method="PUT">
+    <label for="street">Street:</label>
+    <input type="text" name="street" th:value="${address.street}">
+    <br />
+    <label for="city">City:</label>
+    <input type="text" name="city" th:value="${address.city}">
+    <br />
+    <button type="submit">Update Address</button>
+</form>
+
+</body>
+</html>

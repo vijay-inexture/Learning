@@ -3,6 +3,7 @@ package com.learning.springMvc.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.Validator;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -12,6 +13,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
 @Configuration
+@EnableWebMvc
 @ComponentScan({"com.learning.springMvc"})
 public class SpringConfig {
 	
@@ -37,4 +39,5 @@ public class SpringConfig {
         resolver.setTemplateMode(TemplateMode.HTML);
         return resolver;
     }
+    
 }

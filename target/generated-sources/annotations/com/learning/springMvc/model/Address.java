@@ -1,9 +1,13 @@
 package com.learning.springMvc.model;
 
+import jakarta.validation.constraints.NotNull;
+
 public class Address {
 	
 	private Long id;
+	@NotNull
 	private String street;
+	@NotNull
 	private String city;
 	private Long userId;
 	

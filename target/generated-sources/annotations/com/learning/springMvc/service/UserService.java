@@ -2,6 +2,8 @@ package com.learning.springMvc.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.servlet.ModelAndView;
 
 import com.learning.springMvc.model.User;
@@ -9,16 +11,14 @@ import com.learning.springMvc.model.User;
 
 public interface UserService {
 	
-	public String home();
-	
 	public String userForm();
 	
-	public String createUser(User user);
+	public ModelAndView createUser(User user);
 
-	public ModelAndView getAllUser();
+	public ModelAndView getAllUser(HttpSession session);
 
-	public ModelAndView getUserByEmail(String email);
+	public ModelAndView getUserById(Long userId, HttpSession session);
 
-	public ModelAndView getUserById(Long userId);
+	public ModelAndView updateUser(Long userId, HttpSession session);
 
 }
