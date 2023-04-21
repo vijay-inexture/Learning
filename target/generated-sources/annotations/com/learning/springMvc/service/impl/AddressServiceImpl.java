@@ -147,10 +147,10 @@ public class AddressServiceImpl implements AddressService {
     	ModelAndView model = new ModelAndView();
     	List<Address> addresses = addressDao.findAllByUserId(user.getId());
 		user.setAddresses(addresses);
-		model.setViewName("user");
+		model.setViewName("updateUserForm");
 		model.addObject("user",user);
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl(request.getContextPath()+"/users/"+user.getId());
+		redirectView.setUrl(request.getContextPath()+"/users/"+user.getId()+"/updateUser");
 		model.setView(redirectView);
 		return model;
 	}

@@ -20,8 +20,8 @@
             <td th:text="${user.role}"></td>
             <td>
                 <a th:href="@{/users/{userId}(userId=${user.id})}">View</a>
-                <a th:href="@{/edit/{email}(email=${user.email})}">Edit</a>
-                <a th:href="@{/delete/{email}(email=${user.email})}">Delete</a>
+                <a th:href="@{/users/{userId}/updateUser(userId=${user.id})}">Edit</a>
+                <a th:href="@{/users/{userId}/deleteUser(userId=${user.id})}">Delete</a>
             </td>
         </tr>
     </table>

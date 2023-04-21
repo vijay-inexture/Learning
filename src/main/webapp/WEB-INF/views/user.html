@@ -18,22 +18,13 @@
 	        	<th>id</th>
 	            <th>Street</th>
 	            <th>City</th>
-	            <th></th>
-	            <th></th>
 	        </tr>
 	        <tr th:each="address : ${user.addresses}">
 	        	<td th:text="${address.id}"></td>
 	            <td th:text="${address.street}"></td>
 	            <td th:text="${address.city}"></td>
-	            <td><a th:href="@{/users/{userId}/address/{addressId} (userId=${user.id}, addressId=${address.id})}">Edit</a></td>					            
-	            <td>
-				    <a th:href="@{/users/{userId}/address/{addressId}/delete(userId=${user.id}, addressId=${address.id})}" 
-						   th:data-method="DELETE">Delete</a>
-				</td>
 	        </tr>
 	    </table>
-	    <br>
-    	<a th:href="@{/users/{userId}/address (userId=${user.id})}">Add New Address</a>
     </div>
 </body>
 </html>

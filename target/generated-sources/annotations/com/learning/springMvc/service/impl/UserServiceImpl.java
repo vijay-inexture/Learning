@@ -16,6 +16,8 @@ import com.learning.springMvc.model.Address;
 import com.learning.springMvc.model.User;
 import com.learning.springMvc.service.UserService;
 
+import jakarta.validation.Valid;
+
 @Service
 public class UserServiceImpl implements UserService {
 	
@@ -47,29 +49,29 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ModelAndView getAllUser(HttpSession session) {
 		User sessionUser =  (User) session.getAttribute("user");
-		ModelAndView mv = new ModelAndView();
+		ModelAndView model = new ModelAndView();
 		if(sessionUser==null) {
 			session.setAttribute("redirectUrl", "/users");
-			mv.setViewName("redirect:/login");
-			return mv;
+			model.setViewName("redirect:/login");
+			return model;
 		}
 		if(!sessionUser.getRole().equals("ADMIN")) {
 			throw new UserAccessDeniedException("Access Denied!");
 		}
 		List<User> users = userDao.findAll();
-		mv.addObject("users", users);
-		mv.setViewName("users");
-		return mv;
+		model.addObject("users", users);
+		model.setViewName("users");
+		return model;
 	}
 
 	@Override
 	public ModelAndView getUserById(Long userId, HttpSession session) {
 		User sessionUser =  (User) session.getAttribute("user");
-		ModelAndView mv = new ModelAndView();
+		ModelAndView model = new ModelAndView();
 		if(sessionUser==null) {
 			session.setAttribute("redirectUrl", "/users/"+userId);
-			mv.setViewName("redirect:/login");
-			return mv;
+			model.setViewName("redirect:/login");
+			return model;
 		}
 		User user = userDao.findById(userId);
 		if(user==null) {
@@ -77,26 +79,69 @@ public class UserServiceImpl implements UserService {
 		}
 		List<Address> addresses = addressDao.findAllByUserId(user.getId());
 		user.setAddresses(addresses);
-		mv.addObject("user", user);
-		mv.setViewName("user");
-		return mv;
+		model.addObject("user", user);
+		model.setViewName("user");
+		return model;
 	}
 
 	@Override
-	public ModelAndView updateUser(Long userId, HttpSession session) {
+	public ModelAndView updateUserFrom(Long userId, HttpSession session) {
 		User sessionUser =  (User) session.getAttribute("user");
-		ModelAndView mv = new ModelAndView();
+		ModelAndView model = new ModelAndView();
 		if(sessionUser==null) {
 			session.setAttribute("redirectUrl", "/users/"+userId);
-			mv.setViewName("redirect:/login");
-			return mv;
+			model.setViewName("redirect:/login");
+			return model;
 		}
 		User user = userDao.findById(userId);
 		if(user==null) {
 			throw new UserNotFoundException("User not found!");
 		}
+		model.setViewName("updateUserForm");
+		List<Address> addresses = addressDao.findAllByUserId(user.getId());
+		user.setAddresses(addresses);
+		model.addObject("user", user);
+		return model;
+	}
+
+	@Override
+	public ModelAndView updateUser(@Valid User user, Long userId, HttpSession session) {
+		//check session user login or not
+		User sessionUser =  (User) session.getAttribute("user");
+		ModelAndView model = new ModelAndView();
+		if(sessionUser==null) {
+			session.setAttribute("redirectUrl", "/users/"+userId);
+			model.setViewName("redirect:/login");
+			return model;
+		}
 		
-		return null;
+		//check user has access to update 
+		if(!(sessionUser.getRole().equals("ADMIN") || sessionUser.getId().equals(userId))){
+			throw new UserAccessDeniedException("Access Denied!");
+		}
+		
+		//check if user exist with userId
+		User userEntity = userDao.findById(userId);
+		if(userEntity==null) {
+			throw new UserNotFoundException("User not found!");
+		}
+		userEntity.setName(user.getName());
+		
+		//check if user changed email
+		if(!user.getEmail().equals(userEntity.getEmail())) {
+			User userByEmail = userDao.findByEmail(user.getEmail());
+			if(userByEmail!=null) {
+				throw new RuntimeException("User Already Exist!");
+			}
+		}
+		userEntity.setEmail(user.getEmail());
+		userDao.update(userEntity);
+		
+		model.setViewName("user");
+		List<Address> addresses = addressDao.findAllByUserId(user.getId());
+		userEntity.setAddresses(addresses);
+		model.addObject("user", userEntity);
+		return model;
 	}
 
 }

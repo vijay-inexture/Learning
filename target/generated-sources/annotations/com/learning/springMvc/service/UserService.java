@@ -8,6 +8,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.learning.springMvc.model.User;
 
+import jakarta.validation.Valid;
+
 
 public interface UserService {
 	
@@ -19,6 +21,8 @@ public interface UserService {
 
 	public ModelAndView getUserById(Long userId, HttpSession session);
 
-	public ModelAndView updateUser(Long userId, HttpSession session);
+	public ModelAndView updateUserFrom(Long userId, HttpSession session);
+
+	public ModelAndView updateUser(@Valid User user,Long userId,  HttpSession session);
 
 }

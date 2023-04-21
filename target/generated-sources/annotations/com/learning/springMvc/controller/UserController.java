@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -47,8 +48,13 @@ public class UserController {
 	}
 	
 	@GetMapping("/users/{userId}/updateUser")
-	public ModelAndView  updateUser(@PathVariable("userId") Long userId,HttpSession session) {
-		return userService.updateUser(userId, session);
+	public ModelAndView  updateUserFrom(@PathVariable("userId") Long userId,HttpSession session) {
+		return userService.updateUserFrom(userId, session);
+	}
+	
+	@PostMapping("/users/{userId}/updateUser")
+	public ModelAndView updateUser(@Valid @ModelAttribute  User user, @PathVariable("userId") Long userId, HttpSession session) {
+		return userService.updateUser(user, userId, session);
 	}
 	
 }

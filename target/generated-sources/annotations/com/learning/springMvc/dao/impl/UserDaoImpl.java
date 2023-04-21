@@ -76,8 +76,8 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public void update(User user) {
-		// TODO Auto-generated method stub
-
+		String sql = "UPDATE user SET name=?, email=? WHERE id=?";
+		jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getId());	
 	}
 
 	@Override
