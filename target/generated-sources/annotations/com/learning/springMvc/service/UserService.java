@@ -25,4 +25,6 @@ public interface UserService {
 
 	public ModelAndView updateUser(@Valid User user,Long userId,  HttpSession session);
 
+	public ModelAndView deleteUser(Long userId, HttpSession session);
+
 }

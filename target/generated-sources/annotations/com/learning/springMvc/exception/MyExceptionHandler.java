@@ -30,14 +30,24 @@ public class MyExceptionHandler {
 	    return model;
 	}
 	
-//	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//	@ExceptionHandler({Exception.class})
-//	public ModelAndView handlerException(Exception ex, WebRequest request) {
-//		ModelAndView model = new ModelAndView();
-//	    model.addObject("errorMessage", ex.getMessage());
-//	    model.addObject("errorDescription", ex.toString());
-//	    model.setViewName("error");
-//	    return model;
-//	}
+	@ResponseStatus(HttpStatus.CONFLICT)
+	@ExceptionHandler({UserAlreadyExistException.class})
+	public ModelAndView handlerUserAlreadyExistException(UserAlreadyExistException ex, WebRequest request) {
+		ModelAndView model = new ModelAndView();
+	    model.addObject("errorMessage", ex.getMessage());
+	    model.addObject("errorDescription", ex.toString());
+	    model.setViewName("error");
+	    return model;
+	}
+	
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler({Exception.class})
+	public ModelAndView handlerException(Exception ex, WebRequest request) {
+		ModelAndView model = new ModelAndView();
+	    model.addObject("errorMessage", ex.getMessage());
+	    model.addObject("errorDescription", ex.toString());
+	    model.setViewName("error");
+	    return model;
+	}
 
 }

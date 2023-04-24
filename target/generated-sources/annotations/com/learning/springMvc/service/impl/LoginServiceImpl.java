@@ -31,7 +31,7 @@ public class LoginServiceImpl implements LoginService {
 		User user = userDao.findByEmail(credential.getEmail());
 		if(user!=null && user.getPassword().equals(credential.getPassword())) {
 			session.setAttribute("user", user);
-			session.setMaxInactiveInterval(20);
+			session.setMaxInactiveInterval(60*60);
 			String redirectUrl = (String) session.getAttribute("redirectUrl");
 	        if (redirectUrl != null) {
 	            session.removeAttribute("redirectUrl");

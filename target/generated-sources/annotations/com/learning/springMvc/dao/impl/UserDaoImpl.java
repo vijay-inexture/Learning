@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.learning.springMvc.dao.UserDao;
 import com.learning.springMvc.model.Address;
@@ -51,6 +52,7 @@ public class UserDaoImpl implements UserDao {
                 userData.setId(rs.getLong("id"));
                 userData.setName(rs.getString("name"));
                 userData.setEmail(rs.getString("email"));
+                userData.setPassword(rs.getString("password"));
                 userData.setRole(rs.getString("role"));
                 return userData;
             } else {
@@ -76,14 +78,14 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public void update(User user) {
-		String sql = "UPDATE user SET name=?, email=? WHERE id=?";
-		jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getId());	
+		String sql = "UPDATE user SET name=?, email=?, password=? WHERE id=?";
+		jdbcTemplate.update(sql, user.getName(), user.getEmail(),user.getPassword(), user.getId());	
 	}
 
 	@Override
-	public void delete(long id) {
-		// TODO Auto-generated method stub
-
+	public void deleteById(Long userId) {
+		String sql = "DELETE FROM user WHERE id=?";
+		jdbcTemplate.update(sql, userId);
 	}
 
 

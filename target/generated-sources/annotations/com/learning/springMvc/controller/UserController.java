@@ -7,6 +7,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +35,6 @@ public class UserController {
 	
 	@PostMapping("/users")
 	public ModelAndView createUser(@Valid @ModelAttribute  User user) {
-		System.out.println("User controller");
 		return userService.createUser(user);
 	}
 	
@@ -55,6 +56,11 @@ public class UserController {
 	@PostMapping("/users/{userId}/updateUser")
 	public ModelAndView updateUser(@Valid @ModelAttribute  User user, @PathVariable("userId") Long userId, HttpSession session) {
 		return userService.updateUser(user, userId, session);
+	}
+	
+	@DeleteMapping("/users/{userId}/deleteUser")
+	public ModelAndView deleteUser(@PathVariable("userId") Long userId,HttpSession session) {
+		return userService.deleteUser(userId, session);
 	}
 	
 }

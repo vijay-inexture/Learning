@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>User Form</title>
 </head>
 <body>
+	<div layout:fragment="header">
+        <header th:replace="fragments/header :: header"></header>
+    </div>
     <h1>User Form</h1>
     <form action="users" method="post">
     	<div>

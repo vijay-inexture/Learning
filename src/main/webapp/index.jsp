@@ -6,6 +6,6 @@
 <body>
     <h1>Welcome to Homepage.</h1>
 	<br>
-   	<a href="userform">Add New User</a>
+   	<a href="userform">Create New User</a>
 </body>
 </html>

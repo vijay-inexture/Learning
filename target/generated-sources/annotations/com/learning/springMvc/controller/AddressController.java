@@ -46,7 +46,7 @@ public class AddressController {
 		return addressService.updateUserAddress(address, userId, addressId,request, session);
 	}
 	
-	@GetMapping("/users/{userId}/address/{addressId}/delete")
+	@DeleteMapping("/users/{userId}/address/{addressId}")
 	public ModelAndView deleteUserAddress(@PathVariable Long userId, @PathVariable Long addressId,HttpServletRequest request, HttpSession session) {
 		return addressService.deleteUserAddress(userId, addressId,request, session);
 	}

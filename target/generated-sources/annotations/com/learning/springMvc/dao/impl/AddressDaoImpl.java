@@ -48,8 +48,13 @@ public class AddressDaoImpl implements AddressDao {
 	@Override
 	public void deleteById(Long addressId) {
 		String sql = "DELETE FROM address WHERE id=?";
-		jdbcTemplate.update(sql, addressId);
-		
+		jdbcTemplate.update(sql, addressId);		
+	}
+
+	@Override
+	public void deleteAllByUserId(Long userId) {
+		String sql = "DELETE FROM address WHERE user_id=?";
+		jdbcTemplate.update(sql, userId);
 	}
 
 }

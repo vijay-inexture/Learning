@@ -31,11 +31,14 @@ public class AddressServiceImpl implements AddressService {
 	
 	@Override
 	public String createUserAddressForm(Long userId, HttpSession session) {
+		//check login
 		User sessionUser =  (User) session.getAttribute("user");
 		if(sessionUser==null) {
 			session.setAttribute("redirectUrl", "/users/"+userId+"/addressForm");
 			return "redirect:/login";
 		}
+		
+		//check valid userId
 		User user = userDao.findById(userId);
 		if(user==null) {
 			throw new UserNotFoundException("Invalid user");
@@ -45,6 +48,7 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	public ModelAndView createAddress(Address address, Long userId,HttpServletRequest request, HttpSession session) {
+		//check login
 		User sessionUser =  (User) session.getAttribute("user");
 		ModelAndView model = new ModelAndView();
 		if(sessionUser==null) {
@@ -52,13 +56,18 @@ public class AddressServiceImpl implements AddressService {
 			model.setViewName("redirect:/login");
 			return model;
 		}
-		if(!sessionUser.getId().equals(userId)) {
+		
+		//check permission
+		if(!(sessionUser.getRole().equals("ADMIN") || sessionUser.getId().equals(userId))) {
 			throw new UserAccessDeniedException("Access Denied!");
 		}
+		
+		//check valid userId
 		User user = userDao.findById(userId);
 		if(user==null) {
 			throw new UserNotFoundException("Invalid user");
 		}
+		
 		address.setUserId(user.getId());
 		addressDao.save(address);
 		
@@ -69,6 +78,7 @@ public class AddressServiceImpl implements AddressService {
 	
 	@Override
 	public ModelAndView upadateUserAddressForm(Long userId, Long addressId, HttpSession session) {
+		//check login
 		User sessionUser =  (User) session.getAttribute("user");
 		ModelAndView model = new ModelAndView();
 		if(sessionUser==null) {
@@ -76,14 +86,19 @@ public class AddressServiceImpl implements AddressService {
 			model.setViewName("redirect:/login");
 			return model;
 		}
+		
+		//check valid user id
 		User user = userDao.findById(userId);
 		if(user==null) {
 			throw new UserNotFoundException("Invalid user");
 		}
+		
+		//check valid addressId
 		Address address = addressDao.findById(addressId);
 		if(address==null) {
 			throw new AddressNotFoundException("Address not found!");
 		}
+		
 		model.setViewName("updateAddressForm");
 		model.addObject("address", address);
 		return model;
@@ -91,6 +106,7 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	public ModelAndView updateUserAddress(Address address, Long userId, Long addressId,HttpServletRequest request, HttpSession session) {
+		//check login
 		User sessionUser =  (User) session.getAttribute("user");
 		ModelAndView model = new ModelAndView();
 		if(sessionUser==null) {
@@ -98,17 +114,24 @@ public class AddressServiceImpl implements AddressService {
 			model.setViewName("redirect:/login");
 			return model;
 		}
-		if(!sessionUser.getId().equals(userId)) {
+		
+		//check permission
+		if(!(sessionUser.getRole().equals("ADMIN") || sessionUser.getId().equals(userId))) {
 			throw new UserAccessDeniedException("Access Denied!");
 		}
+		
+		//check valid userId
 		User user = userDao.findById(userId);
 		if(user==null) {
 			throw new UserNotFoundException("Invalid user");
 		}
+		
+		//check valid addressId
 		Address addressEntity = addressDao.findById(addressId);
 		if(addressEntity==null) {
 			throw new AddressNotFoundException("Address not found!");
 		}
+		
 		addressEntity.setStreet(address.getStreet());
 		addressEntity.setCity(address.getCity());
 		addressDao.updateAddress(addressEntity);
@@ -119,6 +142,7 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	public ModelAndView deleteUserAddress(Long userId, Long addressId,HttpServletRequest request, HttpSession session) {
+		//check login
 		User sessionUser =  (User) session.getAttribute("user");
 		ModelAndView model = new ModelAndView();
 		if(sessionUser==null) {
@@ -126,21 +150,28 @@ public class AddressServiceImpl implements AddressService {
 			model.setViewName("redirect:/login");
 			return model;
 		}
-		if(!sessionUser.getId().equals(userId)) {
+		
+		//check permission
+		if(!(sessionUser.getRole().equals("ADMIN") || sessionUser.getId().equals(userId))) {
 			throw new UserAccessDeniedException("Access Denied!");
 		}
+		
+		//check valid userId
 		User user = userDao.findById(userId);
 		if(user==null) {
 			throw new UserNotFoundException("Invalid user");
 		}
+		
+		//check valid addressId
 		Address addressEntity = addressDao.findById(addressId);
 		if(addressEntity==null) {
 			throw new AddressNotFoundException("Address not found!");
 		}
 		addressDao.deleteById(addressId);
 		
-		model = showUserDetails(user, request);
-		return model;
+//		model = showUserDetails(user, request);
+//		return model;
+		return null;
 	}
 
 	private ModelAndView showUserDetails(User user, HttpServletRequest request) {
