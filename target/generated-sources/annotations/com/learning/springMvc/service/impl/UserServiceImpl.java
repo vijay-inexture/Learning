@@ -124,15 +124,9 @@ public class UserServiceImpl implements UserService {
 		}
 
 		//admin can not delete other admin or self
-		if(userEntity.getRole().equals("ADMIN") || userEntity.getId().equals(userId)) {
+		if(userEntity.getRole().equals("ADMIN") && userEntity.getId().equals(userId)) {
 			throw new UserAccessDeniedException("Access Denied!");
 		}
-		
-		//admin can not update other admin details
-//		User sessionUser =  (User) session.getAttribute("user");
-//		if(userEntity.getRole().equals("ADMIN") && !sessionUser.getId().equals(userEntity.getId())) {
-//			throw new UserAccessDeniedException("Access Denied!");
-//		}
 		
 		addressDao.deleteAllByUserId(userId);
 		//throwing exception to check @transactional working
