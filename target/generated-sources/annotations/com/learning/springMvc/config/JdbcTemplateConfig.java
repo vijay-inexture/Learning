@@ -27,5 +27,12 @@ public class JdbcTemplateConfig {
 	public PlatformTransactionManager transactionManager() {
 		return new DataSourceTransactionManager(dataSource);
 	}
+	
+//	@Bean
+//    public LocalValidatorFactoryBean validator() {
+//        LocalValidatorFactoryBean validatorFactoryBean = new LocalValidatorFactoryBean();
+//        validatorFactoryBean.setProviderClass(HibernateValidator.class);
+//        return validatorFactoryBean;
+//    }
 
 }

@@ -2,23 +2,58 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>update User Details</title>
+    <style>
+    	#addresses table {
+	        border-collapse: collapse;
+	    }
+	    
+	    #addresses th, #addresses td {
+	        text-align: left;
+	        padding: 8px;
+	        border: 1px solid black;
+	    }
+	    
+	    #addresses th {
+	        background-color: #dddddd;
+	    }
+	    #addresses{
+			margin-top: 50px;
+		}
+        #userDetails{
+		  margin-left: 50px;
+		  margin-top: 50px;
+		}
+    </style>
 </head>
 <body>
+	<div id="userDetails">
 	<div>
-    	<h1>Update User Details </h1> 
-        <form action="" th:method="PUT">
-	    <label for="name">Name:</label>
-	    <input type="text" name="name" th:value="${user.name}">
-	    <br />
-	    <label for="email">Email:</label>
-	    <input type="text" name="email" th:value="${user.email}">
-	    <br />
-	    <label for="password">Password:</label>
-	    <input type="password" name="password" th:value="${user.password}">
-	    <br />
-	    <button type="submit">Update User</button>
+	    <form action="" th:method="PUT">
+	    <table>
+	    	<thead>
+		        <tr>
+	                <th colspan="2"><h1>Update Address Form</h1></th>
+	            </tr>
+	       	</thead>
+	        <tbody>
+	        		<tr>
+	                    <td><label for="name">Name:</label></td>
+	                    <td><input type="text" name="name" th:value="${user.name}"></td>
+	                </tr>
+	                <tr>
+	                    <td><label for="email">Email:</label></td>
+	                    <td><input type="email" name="email" th:value="${user.email}"></td>
+	                </tr>
+	                <tr/>
+	                <tr/>
+	                <tr>
+	                    <td colspan="2" ><button type="submit">Update User</button></td>
+	                </tr>
+	        </tbody>
+	    </table>
+    	</form>
     </div>
-    <div>
+    <div id="addresses">
     	<h1>Address List</h1>
 	    <table>
 	        <tr>
@@ -62,6 +97,7 @@
 	    </table>
 	    <br>
     	<a th:href="@{/users/{userId}/address (userId=${user.id})}">Add New Address</a>
+    </div>
     </div>
 </body>
 </html>

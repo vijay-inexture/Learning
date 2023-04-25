@@ -1,13 +1,20 @@
 package com.learning.springMvc.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.learning.springMvc.dao.UserDao;
 import com.learning.springMvc.dto.Credential;
+import com.learning.springMvc.dto.PasswordReset;
+import com.learning.springMvc.exception.UserNotFoundException;
 import com.learning.springMvc.model.User;
 import com.learning.springMvc.service.LoginService;
 
@@ -16,15 +23,6 @@ public class LoginServiceImpl implements LoginService {
 	
 	@Autowired
 	private UserDao userDao;
-
-	@Override
-	public String loginForm(HttpSession session) {
-		Object sessionUser = session.getAttribute("user");
-		if(sessionUser!=null) {
-			return "redirect:/";
-		}
-		return "loginForm";
-	}
 
 	@Override
 	public String login(@ModelAttribute Credential credential, HttpSession session) {
@@ -37,19 +35,33 @@ public class LoginServiceImpl implements LoginService {
 	            session.removeAttribute("redirectUrl");
 	            return "redirect:" + redirectUrl;
 	        } else {
-	            return "redirect:/";
+	            return "redirect:/users/"+user.getId();
 	        }
 		}
 		return "redirect:login";
 	}
 
 	@Override
-	public String logout(HttpSession session) {
-		Object sessionUser = session.getAttribute("user");
-		if(sessionUser!=null) {
-			session.invalidate();
+	public Map<String, Boolean> forgotPassword(@Valid PasswordReset passwordReset) {
+		Map<String, Boolean> errors = new HashMap<String, Boolean>();
+		errors.put("email", false);
+		errors.put("password", false);
+		errors.put("confirmPassword", false);
+		User user = userDao.findByEmail(passwordReset.getEmail());
+		if(user==null) {
+//			errors.put("email", true);
+			throw new UserNotFoundException("User not exist with Email");
 		}
-		return "redirect:/login";
+		if(!user.getPassword().equals(passwordReset.getPassword())) {
+//			errors.put("password", true);
+			throw new RuntimeException("Invalid Password");
+		}
+		if(!passwordReset.getNewPassword().equals(passwordReset.getConfirmPassword())) {
+//			errors.put("confirmPassword", true);
+			throw new RuntimeException("New Password and ConfirmPassword Must be same");
+		}
+		userDao.updatePassword(passwordReset.getEmail(), passwordReset.getNewPassword());
+		return errors;
 	}
 
 	

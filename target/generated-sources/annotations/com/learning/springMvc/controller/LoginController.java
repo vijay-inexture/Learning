@@ -1,14 +1,20 @@
 package com.learning.springMvc.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.learning.springMvc.dto.Credential;
+import com.learning.springMvc.dto.PasswordReset;
+import com.learning.springMvc.model.User;
 import com.learning.springMvc.service.LoginService;
 
 
@@ -20,7 +26,11 @@ public class LoginController {
 
 	@GetMapping("/login")
 	public String loginForm(HttpSession session) {
-		return loginService.loginForm(session);
+		User sessionUser = (User) session.getAttribute("user");
+		if(sessionUser!=null) {
+			return "redirect:/users/"+sessionUser.getId();
+		}
+		return "loginForm";
 	}
 	
 	@PostMapping("/login")
@@ -30,6 +40,29 @@ public class LoginController {
 	
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
-		return loginService.logout(session);
+		User sessionUser = (User) session.getAttribute("user");
+		if(sessionUser!=null) {
+			session.invalidate();
+		}
+		return "redirect:/login";
+	}
+	
+	@GetMapping("/forgotPasswordForm")
+	public String forgotPasswordForm() {
+		return "forgotPasswordForm";
+	} 
+	
+	@PostMapping("/forgotPassword")
+	public ModelAndView forgotPassword(@Valid @ModelAttribute PasswordReset passwordRest) {
+		Map<String, Boolean> errors = loginService.forgotPassword(passwordRest);
+		ModelAndView model = new ModelAndView();
+		if(errors.get("email") || errors.get("password") || errors.get("confirmPassword")) {
+			model.addObject("errors", errors);
+			model.setViewName("forgotPasswordForm");
+		}
+		else {
+			model.setViewName("redirect:/login");
+		}
+		return model;
 	}
 }

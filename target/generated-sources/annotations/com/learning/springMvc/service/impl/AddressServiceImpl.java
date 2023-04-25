@@ -13,6 +13,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.learning.springMvc.dao.AddressDao;
 import com.learning.springMvc.dao.UserDao;
+import com.learning.springMvc.dto.UserAddress;
 import com.learning.springMvc.exception.AddressNotFoundException;
 import com.learning.springMvc.exception.UserAccessDeniedException;
 import com.learning.springMvc.exception.UserNotFoundException;
@@ -30,160 +31,87 @@ public class AddressServiceImpl implements AddressService {
 	private AddressDao addressDao;
 	
 	@Override
-	public String createUserAddressForm(Long userId, HttpSession session) {
-		//check login
-		User sessionUser =  (User) session.getAttribute("user");
-		if(sessionUser==null) {
-			session.setAttribute("redirectUrl", "/users/"+userId+"/addressForm");
-			return "redirect:/login";
-		}
-		
+	public void createUserAddressForm(Long userId) {		
 		//check valid userId
 		User user = userDao.findById(userId);
 		if(user==null) {
-			throw new UserNotFoundException("Invalid user");
+			throw new UserNotFoundException("User not found!");
 		}
-		return "addressForm";
 	}
 
 	@Override
-	public ModelAndView createAddress(Address address, Long userId,HttpServletRequest request, HttpSession session) {
-		//check login
-		User sessionUser =  (User) session.getAttribute("user");
-		ModelAndView model = new ModelAndView();
-		if(sessionUser==null) {
-			session.setAttribute("redirectUrl", "/users/"+userId);
-			model.setViewName("redirect:/login");
-			return model;
-		}
-		
-		//check permission
-		if(!(sessionUser.getRole().equals("ADMIN") || sessionUser.getId().equals(userId))) {
-			throw new UserAccessDeniedException("Access Denied!");
-		}
-		
-		//check valid userId
-		User user = userDao.findById(userId);
-		if(user==null) {
-			throw new UserNotFoundException("Invalid user");
-		}
-		
+	public User createAddress(Address address, Long userId, HttpSession session) {
+		//validate userId and admin not allow to update other admin details
+		User user = requestValidate(userId, null, session).getUser();
+				
 		address.setUserId(user.getId());
 		addressDao.save(address);
 		
-		model = showUserDetails(user, request);
-		return model;
-	}
-
-	
-	@Override
-	public ModelAndView upadateUserAddressForm(Long userId, Long addressId, HttpSession session) {
-		//check login
-		User sessionUser =  (User) session.getAttribute("user");
-		ModelAndView model = new ModelAndView();
-		if(sessionUser==null) {
-			session.setAttribute("redirectUrl", "/users/"+userId+"/address/"+addressId);
-			model.setViewName("redirect:/login");
-			return model;
-		}
-		
-		//check valid user id
-		User user = userDao.findById(userId);
-		if(user==null) {
-			throw new UserNotFoundException("Invalid user");
-		}
-		
-		//check valid addressId
-		Address address = addressDao.findById(addressId);
-		if(address==null) {
-			throw new AddressNotFoundException("Address not found!");
-		}
-		
-		model.setViewName("updateAddressForm");
-		model.addObject("address", address);
-		return model;
+		return getUserWithAddresses(user);
 	}
 
 	@Override
-	public ModelAndView updateUserAddress(Address address, Long userId, Long addressId,HttpServletRequest request, HttpSession session) {
-		//check login
-		User sessionUser =  (User) session.getAttribute("user");
-		ModelAndView model = new ModelAndView();
-		if(sessionUser==null) {
-			session.setAttribute("redirectUrl", "/users/"+userId);
-			model.setViewName("redirect:/login");
-			return model;
-		}
-		
-		//check permission
-		if(!(sessionUser.getRole().equals("ADMIN") || sessionUser.getId().equals(userId))) {
-			throw new UserAccessDeniedException("Access Denied!");
-		}
-		
-		//check valid userId
-		User user = userDao.findById(userId);
-		if(user==null) {
-			throw new UserNotFoundException("Invalid user");
-		}
-		
-		//check valid addressId
-		Address addressEntity = addressDao.findById(addressId);
-		if(addressEntity==null) {
-			throw new AddressNotFoundException("Address not found!");
-		}
+	public Address upadateUserAddressForm(Long userId, Long addressId, HttpSession session) {
+		//validate userId, addressId and admin not allow to update other admin details
+		Address address = requestValidate(userId, addressId, session).getAddress();
+				
+		return address;
+	}
+
+	@Override
+	public User updateUserAddress(Address address, Long userId, Long addressId,HttpSession session) {
+		//validate userId, addressId and admin not allow to update other admin details
+		UserAddress userAddress = requestValidate(userId, addressId, session);
+		Address addressEntity = userAddress.getAddress();
+		User user = userAddress.getUser();
 		
 		addressEntity.setStreet(address.getStreet());
 		addressEntity.setCity(address.getCity());
 		addressDao.updateAddress(addressEntity);
 		
-		model = showUserDetails(user, request);
-		return model;
+		return getUserWithAddresses(user);
 	}
 
 	@Override
-	public ModelAndView deleteUserAddress(Long userId, Long addressId,HttpServletRequest request, HttpSession session) {
-		//check login
-		User sessionUser =  (User) session.getAttribute("user");
-		ModelAndView model = new ModelAndView();
-		if(sessionUser==null) {
-			session.setAttribute("redirectUrl", "/users/"+userId);
-			model.setViewName("redirect:/login");
-			return model;
-		}
+	public User deleteUserAddress(Long userId, Long addressId,HttpSession session) {
+		//validate userId,addressId and admin not allow to update other admin details
+		User user = requestValidate(userId, addressId, session).getUser();
 		
-		//check permission
-		if(!(sessionUser.getRole().equals("ADMIN") || sessionUser.getId().equals(userId))) {
-			throw new UserAccessDeniedException("Access Denied!");
-		}
+		addressDao.deleteById(addressId);
 		
+		return getUserWithAddresses(user);
+	}
+
+	private UserAddress requestValidate(Long userId, Long addressId, HttpSession session) {
 		//check valid userId
 		User user = userDao.findById(userId);
 		if(user==null) {
-			throw new UserNotFoundException("Invalid user");
+			throw new UserNotFoundException("User not found!");
 		}
+
+		//admin not allow to update other admin details
+		User sessionUser =  (User) session.getAttribute("user");
+		if(user.getRole().equals("ADMIN") && !sessionUser.getId().equals(user.getId())) {
+			throw new UserAccessDeniedException("Access Denied!");
+		}	
+		
+		UserAddress userAddress = new UserAddress();
 		
 		//check valid addressId
-		Address addressEntity = addressDao.findById(addressId);
-		if(addressEntity==null) {
-			throw new AddressNotFoundException("Address not found!");
+		if(addressId!=null) {
+			Address address = addressDao.findById(addressId);
+			if(address==null) {
+				throw new AddressNotFoundException("Address not found!");
+			}
+			userAddress.setAddress(address);
 		}
-		addressDao.deleteById(addressId);
-		
-//		model = showUserDetails(user, request);
-//		return model;
-		return null;
+		userAddress.setUser(user);
+		return userAddress;
 	}
-
-	private ModelAndView showUserDetails(User user, HttpServletRequest request) {
-    	ModelAndView model = new ModelAndView();
-    	List<Address> addresses = addressDao.findAllByUserId(user.getId());
+	
+	private User getUserWithAddresses(User user) {
+		List<Address> addresses = addressDao.findAllByUserId(user.getId());
 		user.setAddresses(addresses);
-		model.setViewName("updateUserForm");
-		model.addObject("user",user);
-		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl(request.getContextPath()+"/users/"+user.getId()+"/updateUser");
-		model.setView(redirectView);
-		return model;
+		return user;
 	}
-
 }

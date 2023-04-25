@@ -12,4 +12,5 @@ public interface UserDao {
 	public User findByEmail(String email);
 	public User findById(Long userId);
 	public void deleteById(Long userId);
+	public void updatePassword(String email, String newPassword);
 }

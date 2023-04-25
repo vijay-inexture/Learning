@@ -2,18 +2,49 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Update Address Form</title>
+    <style>
+        table {
+            margin: 0 auto;
+        }
+        #createBtn{
+		  display: block;
+		  margin: 0 auto;
+		  margin-top: 10px;
+		}
+		#createAddress{
+			padding-top: 20px;
+			margin-right: 0px;
+		}
+    </style>
 </head>
 <body>
-    <h1>Update Address Form</h1>
-    <form action="" th:method="PUT">
-    <label for="street">Street:</label>
-    <input type="text" name="street" th:value="${address.street}">
-    <br />
-    <label for="city">City:</label>
-    <input type="text" name="city" th:value="${address.city}">
-    <br />
-    <button type="submit">Update Address</button>
-</form>
-
+	<div id="createAddress">
+	    <form action="" th:method="put">
+		    <table>
+			    <thead>
+		            <tr>
+		                <th colspan="2"><h1>Update Address Form</h1></th>
+		            </tr>
+	        	</thead>
+	        	<tbody>
+			        <tr>
+			            <td><label for="streat">Street:</label></td>
+			            <td><input type="text"  name="street" th:value="${address.street}"/></td>
+			        </tr>
+			        <tr>
+			            <td><label for="city">City:</label></td>
+			            <td><input type="text" name="city" th:value="${address.city}"/></td>
+			        </tr>
+			        <tr></tr>
+			        <tr>
+			           <td colspan="2" >
+			               <button id="createBtn" type="submit">Update Address</button>
+			           </td>
+			        </tr>
+		        </tbody>
+		    </table>    
+	     </form>
+     </div>
 </body>
 </html>
+ 

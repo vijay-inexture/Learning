@@ -1,6 +1,6 @@
 package com.learning.springMvc.model;
 
-import jakarta.validation.constraints.NotNull;
+import javax.validation.constraints.NotNull;
 
 public class Address {
 	

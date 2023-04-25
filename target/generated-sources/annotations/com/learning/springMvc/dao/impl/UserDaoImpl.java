@@ -78,14 +78,20 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public void update(User user) {
-		String sql = "UPDATE user SET name=?, email=?, password=? WHERE id=?";
-		jdbcTemplate.update(sql, user.getName(), user.getEmail(),user.getPassword(), user.getId());	
+		String sql = "UPDATE user SET name=?, email=? WHERE id=?";
+		jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getId());	
 	}
 
 	@Override
 	public void deleteById(Long userId) {
 		String sql = "DELETE FROM user WHERE id=?";
 		jdbcTemplate.update(sql, userId);
+	}
+
+	@Override
+	public void updatePassword(String email, String newPassword) {
+		String sql = "UPDATE user SET password=? WHERE email=?";
+		jdbcTemplate.update(sql,newPassword, email);	
 	}
 
 

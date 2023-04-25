@@ -1,9 +1,10 @@
 package com.learning.springMvc.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 public class User {
 	
@@ -16,7 +17,7 @@ public class User {
 	private String password;
 	@NotNull
 	private String role;
-	private List<Address> addresses;
+	private List<Address> addresses = new ArrayList<Address>();
 	
 	public User() {
 		super();

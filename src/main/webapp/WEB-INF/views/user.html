@@ -2,8 +2,31 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>User Details</title>
+    <style>
+    	table {
+	        border-collapse: collapse;
+	    }
+	    
+	    th, td {
+	        text-align: left;
+	        padding: 8px;
+	        border: 1px solid black;
+	    }
+	    
+	    th {
+	        background-color: #dddddd;
+	    }
+        #userDetails{
+		  margin-left: 50px;
+		  margin-top: 50px;
+		}
+		#addresses{
+			margin-top: 50px;
+		}
+    </style>
 </head>
 <body>
+	<div id="userDetails">
 	<div>
     	<h1>User Details </h1> <p><a th:href="@{/users/{userId}/updateUser (userId=${user.id})}">Edit User Details</a></p>
         <p><strong>ID:</strong> <span th:text="${user.id}"></span></p>
@@ -11,7 +34,7 @@
         <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
         <p><strong>Role:</strong> <span th:text="${user.role}"></span></p>
     </div>
-    <div>
+    <div id="addresses">
     	<h1>Address List</h1>
 	    <table>
 	        <tr>
@@ -25,6 +48,7 @@
 	            <td th:text="${address.city}"></td>
 	        </tr>
 	    </table>
+    </div>
     </div>
 </body>
 </html>

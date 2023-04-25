@@ -3,28 +3,27 @@ package com.learning.springMvc.service;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
+import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.learning.springMvc.model.User;
 
-import jakarta.validation.Valid;
 
 
 public interface UserService {
 	
-	public String userForm();
-	
-	public ModelAndView createUser(User user);
+	public User createUser(User user);
 
-	public ModelAndView getAllUser(HttpSession session);
+	public List<User>  getAllUser();
 
-	public ModelAndView getUserById(Long userId, HttpSession session);
+	public User getUserById(Long userId);
 
-	public ModelAndView updateUserFrom(Long userId, HttpSession session);
+	public User updateUserForm(Long userId, HttpSession session);
 
-	public ModelAndView updateUser(@Valid User user,Long userId,  HttpSession session);
+	public User updateUser(User user,Long userId,  HttpSession session);
 
-	public ModelAndView deleteUser(Long userId, HttpSession session);
+	public void deleteUser(Long userId, HttpSession session);
 
 }

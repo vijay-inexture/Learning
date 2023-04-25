@@ -2,17 +2,51 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Address Form</title>
+    <style>
+        table {
+            margin: 0 auto;
+        }
+        #createBtn{
+		  display: block;
+		  margin: 0 auto;
+		  margin-top: 10px;
+		}
+		#createAddress{
+			padding-top: 20px;
+			margin-right: 0px;
+		}
+    </style>
 </head>
 <body>
-    <h1>Address Form</h1>
-    <form action="" method="post">
-        <label for="street">Street:</label>
-        <input type="text" id="street" name="street"/>
-        <br />
-        <label for="city">City:</label>
-        <input type="text" id="city" name="city"/>
-        <br />
-        <input type="submit" value="Submit" />
-    </form>
+	<div id="createAddress">
+	    <form action="" method="post">
+		    <table>
+			    <thead>
+		            <tr>
+		                <th colspan="2">
+		                    <h1>Address Form</h1>
+		                </th>
+		            </tr>
+	        	</thead>
+	        	<tbody>
+			        <tr>
+			            <td><label for="streat">Street:</label></td>
+			            <td><input type="text" id="street" name="street"/></td>
+			        </tr>
+			        <tr>
+			            <td><label for="city">City:</label></td>
+			            <td><input type="text" id="city" name="city"/></td>
+			        </tr>
+			        <tr></tr>
+			        <tr>
+			           <td colspan="2" >
+			               <button id="createBtn" type="submit">Create Address</button>
+			           </td>
+			        </tr>
+		        </tbody>
+		    </table>    
+	     </form>
+     </div>
 </body>
 </html>
+ 
