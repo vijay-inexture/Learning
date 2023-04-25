@@ -1,6 +1,11 @@
+<!DOCTYPE html>
 <html>
+<head>
+    <title>Welcome</title>
+</head>
 <body>
-<p>Welcome to home page</p>  
+    <h1>Welcome to Homepage.</h1>
+	<br>
+   	<a href="userform">Create New User</a>
 </body>
 </html>
-

@@ -3,12 +3,13 @@ package com.learning.springMvc.service;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.springframework.web.servlet.ModelAndView;
 
 import com.learning.springMvc.dto.Credential;
 import com.learning.springMvc.dto.PasswordReset;
+
+import jakarta.validation.Valid;
 
 public interface LoginService {
 

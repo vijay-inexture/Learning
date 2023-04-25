@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Details</title>
+    <style>
+    	table {
+	        border-collapse: collapse;
+	    }
+	    
+	    th, td {
+	        text-align: left;
+	        padding: 8px;
+	        border: 1px solid black;
+	    }
+	    
+	    th {
+	        background-color: #dddddd;
+	    }
+        #userDetails{
+		  margin-left: 50px;
+		  margin-top: 50px;
+		}
+		#addresses{
+			margin-top: 50px;
+		}
+		ul {
+		  list-style-type: none;
+		  margin: 0;
+		  padding: 0 0 0 45%;
+		  overflow: hidden;
+		  background-color: #f3f3f3;
+		}
+		li {
+		  float: left;
+		}
+		li a {
+		  display: block;
+		  color: black;
+		  text-align: center;
+		  padding: 14px 16px;
+		  text-decoration: none;
+		}
+		li a:hover {
+		  background-color: #ddd;
+		}
+    </style>
+</head>
+<body>
+	<div th:include="fragments/header :: header"></div>
+	<div id="userDetails">
+	<div>
+    	<h1>User Details </h1> <p><a th:href="@{/users/{userId}/updateUser (userId=${user.id})}">Edit User Details</a></p>
+        <p><strong>ID:</strong> <span th:text="${user.id}"></span></p>
+        <p><strong>Name:</strong> <span th:text="${user.name}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+        <p><strong>Role:</strong> <span th:text="${user.role}"></span></p>
+    </div>
+    <div id="addresses">
+    	<h1>Address List</h1>
+	    <table>
+	        <tr>
+	        	<th>id</th>
+	            <th>Street</th>
+	            <th>City</th>
+	        </tr>
+	        <tr th:each="address : ${user.addresses}">
+	        	<td th:text="${address.id}"></td>
+	            <td th:text="${address.street}"></td>
+	            <td th:text="${address.city}"></td>
+	        </tr>
+	    </table>
+    </div>
+    </div>
+</body>
+</html>

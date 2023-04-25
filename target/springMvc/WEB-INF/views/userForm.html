@@ -1,21 +1,72 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>User Form</title>
+    <style>
+        table {
+            margin: 0 auto;
+        }
+        #createBtn{
+		  display: block;
+		  margin-left: 20%;
+		  margin-top: 10px;
+		}
+		ul {
+		  list-style-type: none;
+		  margin: 0;
+		  padding: 0 0 0 45%;
+		  overflow: hidden;
+		  background-color: #f3f3f3;
+		}
+		li {
+		  float: left;
+		}
+		li a {
+		  display: block;
+		  color: black;
+		  text-align: center;
+		  padding: 14px 16px;
+		  text-decoration: none;
+		}
+		li a:hover {
+		  background-color: #ddd;
+		}
+    </style>
 </head>
 <body>
-    <h1>User Form</h1>
-    <form action="user" method="post">
-	    <label for="name">Name:</label>
-	    <input type="text" id="name" name="name"  />
-	
-	    <label for="email">Email:</label>
-	    <input type="email" id="email" name="email"  />
-	
-	    <label for="role">Role:</label>
-	    <input type="text" id="role" name="role"  />
-
-    <button type="submit">Save</button>
+	<div th:include="fragments/header :: header"></div>
+	<!-- <div layout:fragment="header">
+        <header th:replace="fragments/header :: header"></header>
+    </div>  -->
+    <form action="users" method="post">
+    	<table>
+		  <thead>
+	            <tr>
+	                <th colspan="2">
+	                    <h1>User Form</h1>
+	                </th>
+	            </tr>
+	        </thead>
+		  <tbody>
+		    <tr>
+		      <td><label for="name">Name:</label></td>
+		      <td><input type="text" id="name" name="name"></td>
+		    </tr>
+		    <tr>
+		      <td><label for="email">Email:</label></td>
+		      <td><input type="email" id="email" name="email"></td>
+		    </tr>
+		    <tr>
+		      <td><label for="password">Password:</label></td>
+		      <td><input type="password" id="password" name="password"></td>
+		    </tr>
+		    <tr>
+		      <td></td>
+		      <td><button id="createBtn" type="submit">Create</button></td>
+		    </tr>
+		  </tbody>
+		</table>
 </form>
 </body>
 </html>

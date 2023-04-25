@@ -15,7 +15,6 @@ public class User {
 	@Email
 	private String email;
 	private String password;
-	@NotNull
 	private String role;
 	private List<Address> addresses = new ArrayList<Address>();
 	

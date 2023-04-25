@@ -1,16 +1,20 @@
 package com.learning.springMvc.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
 import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,13 +29,21 @@ import com.learning.springMvc.exception.UserAccessDeniedException;
 import com.learning.springMvc.model.User;
 import com.learning.springMvc.service.UserService;
 
+import jakarta.validation.Valid;
+
 
 @Controller
-@Validated
 public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	private Validator validator;
+	
+	public UserController() {
+		ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+	    validator = validatorFactory.getValidator();
+	}
 	
 	@GetMapping("/userform")
 	public String createUserForm() {
@@ -44,7 +56,10 @@ public class UserController {
 		if (result.hasErrors()) {
 			throw new RuntimeException("Error in bean validate");
 		}
-		
+	
+	    if (result.hasErrors()) {
+			throw new RuntimeException("Error in bean validate");
+		}
 		User userEntity = userService.createUser(user);
 		
 		ModelAndView model = new ModelAndView();
@@ -113,7 +128,7 @@ public class UserController {
 		
 		User user = userService.updateUserForm(userId, session);
 		
-		model.setViewName("updateUserForm");
+		model.setViewName("userForm");
 		model.addObject("user", user);
 		return model;
 	}

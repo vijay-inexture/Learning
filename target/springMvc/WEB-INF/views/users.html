@@ -1,0 +1,99 @@
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User List</title>
+    <style>
+    	#users {
+    		margin-top: 50px;
+    		margin-left: 50px;
+    	}
+    	table {
+	        border-collapse: collapse;
+	    }
+	    
+	    th, td {
+	        text-align: left;
+	        padding: 8px;
+	        border: 1px solid black;
+	    }
+	    
+	    th {
+	        background-color: #dddddd;
+	    }	    
+		ul {
+		  list-style-type: none;
+		  margin: 0;
+		  padding: 0 0 0 45%;
+		  overflow: hidden;
+		  background-color: #f3f3f3;
+		}
+		li {
+		  float: left;
+		}
+		li a {
+		  display: block;
+		  color: black;
+		  text-align: center;
+		  padding: 14px 16px;
+		  text-decoration: none;
+		}
+		li a:hover {
+		  background-color: #ddd;
+		}
+    </style>
+</head>
+<body>
+	<div th:include="fragments/header :: header"></div>
+	<div id="users">
+	<h1>User List </h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.role}"></td>
+            <td>
+                <a th:href="@{/users/{userId}(userId=${user.id})}">View</a>
+                <a th:href="@{/users/{userId}/updateUser(userId=${user.id})}">Edit</a>
+                
+				<button type="button" th:onclick="deleteUser([[${user.id}]])">Delete</button>
+				
+				<!-- AJAX function to delete user -->
+				<script>
+				    function deleteUser(userId) {
+				        if (confirm("Are you sure you want to delete this user?")) {
+				            fetch("users/"+userId+"/deleteUser", {
+				                method: 'DELETE'
+				            })
+				            .then(response => {
+				                if (response.ok) {
+				                	location.reload();
+				                    console.log('User deleted successfully');
+				                } else {
+				                    console.log('Error deleting user');
+				                }
+				            })
+				            .catch(error => {
+				                console.log('Error deleting user');
+				            });
+				        }
+				    }
+				</script>
+                
+                <!-- <a th:href="@{/users/{userId}/deleteUser(userId=${user.id})}">Delete</a> -->
+            </td>
+        </tr>
+    </table>
+    <br>
+    <a th:href="@{/userform}">Create New User</a>
+    </div>
+</body>
+</html>
+ 

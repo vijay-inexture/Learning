@@ -92,7 +92,7 @@
 	        <url>http://localhost:8080/manager/text</url> 
 	        <username>admin</username> 
 	        <password>admin</password>
-	        <path>/demo</path> 
+	        <path>/springMvc</path> 
 	      </configuration>
 	    </plugin>
         <plugin>

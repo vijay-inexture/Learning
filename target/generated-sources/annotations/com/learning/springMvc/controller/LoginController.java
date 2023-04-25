@@ -3,7 +3,6 @@ package com.learning.springMvc.controller;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +15,8 @@ import com.learning.springMvc.dto.Credential;
 import com.learning.springMvc.dto.PasswordReset;
 import com.learning.springMvc.model.User;
 import com.learning.springMvc.service.LoginService;
+
+import jakarta.validation.Valid;
 
 
 @Controller

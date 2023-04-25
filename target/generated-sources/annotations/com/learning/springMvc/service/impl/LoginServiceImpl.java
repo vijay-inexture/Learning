@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +16,8 @@ import com.learning.springMvc.dto.PasswordReset;
 import com.learning.springMvc.exception.UserNotFoundException;
 import com.learning.springMvc.model.User;
 import com.learning.springMvc.service.LoginService;
+
+import jakarta.validation.Valid;
 
 @Service
 public class LoginServiceImpl implements LoginService {

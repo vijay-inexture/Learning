@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Update Address Form</title>
+    <style>
+        table {
+            margin: 0 auto;
+        }
+        #createBtn{
+		  display: block;
+		  margin: 0 auto;
+		  margin-top: 10px;
+		}
+		#createAddress{
+			padding-top: 20px;
+			margin-right: 0px;
+		}
+		ul {
+		  list-style-type: none;
+		  margin: 0;
+		  padding: 0 0 0 45%;
+		  overflow: hidden;
+		  background-color: #f3f3f3;
+		}
+		li {
+		  float: left;
+		}
+		li a {
+		  display: block;
+		  color: black;
+		  text-align: center;
+		  padding: 14px 16px;
+		  text-decoration: none;
+		}
+		li a:hover {
+		  background-color: #ddd;
+		}
+    </style>
+</head>
+<body>
+	<div th:include="fragments/header :: header"></div>
+	<div id="createAddress">
+	    <form action="" th:method="put">
+		    <table>
+			    <thead>
+		            <tr>
+		                <th colspan="2"><h1>Update Address Form</h1></th>
+		            </tr>
+	        	</thead>
+	        	<tbody>
+			        <tr>
+			            <td><label for="streat">Street:</label></td>
+			            <td><input type="text"  name="street" th:value="${address.street}"/></td>
+			        </tr>
+			        <tr>
+			            <td><label for="city">City:</label></td>
+			            <td><input type="text" name="city" th:value="${address.city}"/></td>
+			        </tr>
+			        <tr></tr>
+			        <tr>
+			           <td colspan="2" >
+			               <button id="createBtn" type="submit">Update Address</button>
+			           </td>
+			        </tr>
+		        </tbody>
+		    </table>    
+	     </form>
+     </div>
+</body>
+</html>
+ 
