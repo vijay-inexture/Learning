@@ -14,6 +14,7 @@ public class User {
 	@NotNull
 	@Email
 	private String email;
+	@NotNull
 	private String password;
 	private String role;
 	private List<Address> addresses = new ArrayList<Address>();
@@ -22,7 +23,7 @@ public class User {
 		super();
 	}
 
-	public User(Long id, @NotNull String name, @NotNull @Email String email, String password, @NotNull String role,
+	public User(Long id, String name, String email, String password, String role,
 			List<Address> addresses) {
 		super();
 		this.id = id;

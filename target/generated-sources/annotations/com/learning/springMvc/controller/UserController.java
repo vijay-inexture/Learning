@@ -1,13 +1,15 @@
 package com.learning.springMvc.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
-import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,13 +42,6 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	private Validator validator;
-	
-	public UserController() {
-		ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-	    validator = validatorFactory.getValidator();
-	}
-	
 	@GetMapping("/userform")
 	public String createUserForm() {
 		return "userForm";
@@ -52,23 +49,18 @@ public class UserController {
 	
 	@PostMapping("/users")
 	public ModelAndView createUser(@Valid @ModelAttribute  User user, BindingResult result) {
-		System.out.println(result.toString());
 		if (result.hasErrors()) {
 			throw new RuntimeException("Error in bean validate");
 		}
-	
-	    if (result.hasErrors()) {
-			throw new RuntimeException("Error in bean validate");
-		}
+		ModelAndView model = new ModelAndView();
+
 		User userEntity = userService.createUser(user);
 		
-		ModelAndView model = new ModelAndView();
-	
 		model.setViewName("userStatus");
 		model.addObject("userId", userEntity.getId());
 		return model;
 	}
-	
+
 	@GetMapping("/users")
 	public ModelAndView getAllUser(HttpSession session) {
 		//check session for login
@@ -130,6 +122,7 @@ public class UserController {
 		
 		model.setViewName("userForm");
 		model.addObject("user", user);
+		model.addObject("update", true);
 		return model;
 	}
 	
