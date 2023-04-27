@@ -1,5 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" isELIgnored="false"%>
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <title>Error</title>
     <style>
@@ -12,8 +14,8 @@
 <body>
 	<div id="error">
 	    <h1>Error</h1>
-	    <p th:text="${errorMessage}"></p>
-	    <p th:text="${errorDescription}"></p>
+	    <p>${errorMessage}</p>
+	    <p>${errorDescription}</p>
     </div>
 </body>
 </html>

@@ -15,6 +15,6 @@ public interface LoginService {
 
 	String login(Credential credential,HttpSession session);
 
-	Map<String, Boolean> forgotPassword(@Valid PasswordReset passwordReset);
+	void forgotPassword(@Valid PasswordReset passwordReset);
 
 }

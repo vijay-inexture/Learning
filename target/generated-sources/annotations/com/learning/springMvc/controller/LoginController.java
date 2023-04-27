@@ -18,13 +18,12 @@ import com.learning.springMvc.service.LoginService;
 
 import jakarta.validation.Valid;
 
-
 @Controller
 public class LoginController {
 	
 	@Autowired
 	private LoginService loginService;
-
+	
 	@GetMapping("/login")
 	public String loginForm(HttpSession session) {
 		User sessionUser = (User) session.getAttribute("user");
@@ -55,15 +54,9 @@ public class LoginController {
 	
 	@PostMapping("/forgotPassword")
 	public ModelAndView forgotPassword(@Valid @ModelAttribute PasswordReset passwordRest) {
-		Map<String, Boolean> errors = loginService.forgotPassword(passwordRest);
+		loginService.forgotPassword(passwordRest);
 		ModelAndView model = new ModelAndView();
-		if(errors.get("email") || errors.get("password") || errors.get("confirmPassword")) {
-			model.addObject("errors", errors);
-			model.setViewName("forgotPasswordForm");
-		}
-		else {
-			model.setViewName("redirect:/login");
-		}
+		model.setViewName("redirect:/login");
 		return model;
 	}
 }

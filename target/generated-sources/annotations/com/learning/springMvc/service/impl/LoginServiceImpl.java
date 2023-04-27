@@ -39,30 +39,22 @@ public class LoginServiceImpl implements LoginService {
 	            return "redirect:/users/"+user.getId();
 	        }
 		}
-		return "redirect:login";
+		return "redirect:/login";
 	}
 
 	@Override
-	public Map<String, Boolean> forgotPassword(@Valid PasswordReset passwordReset) {
-		Map<String, Boolean> errors = new HashMap<String, Boolean>();
-		errors.put("email", false);
-		errors.put("password", false);
-		errors.put("confirmPassword", false);
+	public void forgotPassword(@Valid PasswordReset passwordReset) {
 		User user = userDao.findByEmail(passwordReset.getEmail());
 		if(user==null) {
-//			errors.put("email", true);
 			throw new UserNotFoundException("User not exist with Email");
 		}
 		if(!user.getPassword().equals(passwordReset.getPassword())) {
-//			errors.put("password", true);
 			throw new RuntimeException("Invalid Password");
 		}
 		if(!passwordReset.getNewPassword().equals(passwordReset.getConfirmPassword())) {
-//			errors.put("confirmPassword", true);
 			throw new RuntimeException("New Password and ConfirmPassword Must be same");
 		}
 		userDao.updatePassword(passwordReset.getEmail(), passwordReset.getNewPassword());
-		return errors;
 	}
 
 	

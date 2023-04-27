@@ -1,6 +1,6 @@
-
-  <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Forgot Password</title>
@@ -52,8 +52,6 @@
 	  </table>
   	
 </form>
-<script>
-</script>]
 </body>
 </html>
   

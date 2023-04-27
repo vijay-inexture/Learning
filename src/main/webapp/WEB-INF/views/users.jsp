@@ -1,5 +1,8 @@
- <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<html>
 <head>
     <title>User List</title>
     <style>
@@ -19,31 +22,11 @@
 	    
 	    th {
 	        background-color: #dddddd;
-	    }	    
-		ul {
-		  list-style-type: none;
-		  margin: 0;
-		  padding: 0 0 0 45%;
-		  overflow: hidden;
-		  background-color: #f3f3f3;
-		}
-		li {
-		  float: left;
-		}
-		li a {
-		  display: block;
-		  color: black;
-		  text-align: center;
-		  padding: 14px 16px;
-		  text-decoration: none;
-		}
-		li a:hover {
-		  background-color: #ddd;
-		}
+	    }	 
     </style>
 </head>
 <body>
-	<div th:include="fragments/header :: header"></div>
+	<jsp:include page="fragments/header.jsp" /> 
 	<div id="users">
 	<h1>User List </h1>
     <table>
@@ -54,22 +37,23 @@
             <th>Role</th>
             <th>Actions</th>
         </tr>
-        <tr th:each="user : ${users}">
-            <td th:text="${user.id}"></td>
-            <td th:text="${user.name}"></td>
-            <td th:text="${user.email}"></td>
-            <td th:text="${user.role}"></td>
+        <c:forEach items="${users}" var="user">
+        <tr>
+            <td><c:out value="${user.id}" /></td>
+            <td><c:out value="${user.name}" /></td>
+            <td><c:out value="${user.email}" /></td>
+            <td><c:out value="${user.role}" /></td>
             <td>
-                <a th:href="@{/users/{userId}(userId=${user.id})}">View</a>
-                <a th:href="@{/users/{userId}/updateUser(userId=${user.id})}">Edit</a>
+                <a href="<c:url value='/users/' /><c:out value='${user.id}' />">View</a>
+                <a href="<c:url value='/users/' /><c:out value='${user.id}' />/updateUser">Edit</a>
                 
-				<button type="button" th:onclick="deleteUser([[${user.id}]])">Delete</button>
+				<button type="button" onclick="deleteUser(${user.id})">Delete</button>
 				
 				<!-- AJAX function to delete user -->
 				<script>
 				    function deleteUser(userId) {
-				        if (confirm("Are you sure you want to delete this user?")) {
-				            fetch("users/"+userId+"/deleteUser", {
+				        if (confirm('Are you sure you want to delete this user?')) {
+				            fetch('users/'+userId+'/deleteUser', {
 				                method: 'DELETE'
 				            })
 				            .then(response => {
@@ -87,13 +71,13 @@
 				    }
 				</script>
                 
-                <!-- <a th:href="@{/users/{userId}/deleteUser(userId=${user.id})}">Delete</a> -->
+                <!-- <a href="<c:url value='/users/' /><c:out value='${user.id}' />/deleteUser">Delete</a> -->
             </td>
         </tr>
+        </c:forEach>
     </table>
     <br>
-    <a th:href="@{/userform}">Create New User</a>
+    <a href="<c:url value='/userform' />">Create New User</a>
     </div>
 </body>
 </html>
- 
