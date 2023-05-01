@@ -30,7 +30,6 @@
 	    <groupId>org.springframework</groupId>
 	    <artifactId>spring-webmvc</artifactId>
 	    <version>5.3.27</version>
-	   <!-- <version>5.1.1.RELEASE</version> -->
 	</dependency>
 	<dependency>    
 	    <groupId>javax.servlet</groupId>    
@@ -39,14 +38,14 @@
 	</dependency> 
 	<dependency>
 	    <groupId>org.springframework</groupId>
-	    <artifactId>spring-jdbc</artifactId>
-	    <version>6.0.6</version>
+	    <artifactId>spring-orm</artifactId>
+	    <version>6.0.8</version>
 	</dependency>
 	<dependency>
-    	<groupId>org.springframework</groupId>
-	    <artifactId>spring-tx</artifactId>
-	    <version>6.0.6</version>
-	</dependency>	
+	    <groupId>org.hibernate.orm</groupId>
+	    <artifactId>hibernate-core</artifactId>
+	    <version>6.2.1.Final</version>
+	</dependency>
 	<dependency>
 	    <groupId>mysql</groupId>
 	    <artifactId>mysql-connector-java</artifactId>
@@ -57,6 +56,16 @@
 	    <artifactId>jstl</artifactId>
 	    <version>1.2</version>
 	</dependency>
+	<!--<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-jdbc</artifactId>
+	    <version>6.0.6</version>
+	</dependency>
+	<dependency>
+    	<groupId>org.springframework</groupId>
+	    <artifactId>spring-tx</artifactId>
+	    <version>6.0.6</version>
+	</dependency>-->	
 	
 	<dependency>
 	    <groupId>javax.validation</groupId>
@@ -66,13 +75,14 @@
 	<dependency>
 	    <groupId>org.hibernate</groupId>
 	    <artifactId>hibernate-validator</artifactId>
+	    <version>6.2.1.Final</version>
+	</dependency>
+	
+	<!--<dependency>
+	    <groupId>org.hibernate</groupId>
+	    <artifactId>hibernate-validator</artifactId>
 	    <version>8.0.0.Final</version>
-	</dependency>
-	<dependency>
-		<groupId>com.vijay</groupId>
-		<artifactId>mvc-multiple-views</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</dependency>
+	</dependency>-->
   </dependencies>
 
   <build>

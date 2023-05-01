@@ -4,6 +4,7 @@
     <title>Welcome</title>
 </head>
 <body>
+	<jsp:include page="/WEB-INF/views/fragments/header.jsp" /> 
     <h1>Welcome to Homepage.</h1>
 	<br>
    	<a href="userform">Create New User</a>
