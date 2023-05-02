@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.learning.springMvc.dao.UserDao;
+import com.learning.springMvc.model.Address;
 import com.learning.springMvc.model.User;
 
 @Repository

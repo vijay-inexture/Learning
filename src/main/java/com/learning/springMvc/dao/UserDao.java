@@ -2,6 +2,7 @@ package com.learning.springMvc.dao;
 
 import java.util.List;
 
+import com.learning.springMvc.model.Address;
 import com.learning.springMvc.model.User;
 
 public interface UserDao {

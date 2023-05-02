@@ -18,6 +18,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.learning.springMvc.dto.UserUpdateRequest;
 import com.learning.springMvc.exception.UserAccessDeniedException;
+import com.learning.springMvc.model.Address;
 import com.learning.springMvc.model.User;
 import com.learning.springMvc.service.UserService;
 
@@ -110,17 +111,20 @@ public class UserController {
 		
 		model.setViewName("userForm");
 		model.addObject("user", user);
+		model.addObject("addresses",user.getAddresses());
 		model.addObject("update", true);
 		return model;
 	}
 	
 	@PostMapping("/users/{userId}/updateUser")
-	public ModelAndView updateUser(@Valid @ModelAttribute  UserUpdateRequest user, BindingResult result, @PathVariable("userId") Long userId, HttpSession session) {
+	public ModelAndView updateUser(@Valid @ModelAttribute("user")  UserUpdateRequest user, BindingResult result, @PathVariable("userId") Long userId, HttpSession session) {
 		ModelAndView model = new ModelAndView();
 		if(result.hasErrors()) {
+			List<Address> addresses = getAllAddressByUserId(userId);
+			user.setId(userId);
 			model.setViewName("userForm");
-			User userFromModel = (User) getUserById(userId, session).getModel().get("user");
-			model.addObject("user", userFromModel);
+			model.addObject("user", user);
+			model.addObject("addresses", addresses);
 			model.addObject("update", true);
 			return model;
 		}
@@ -164,6 +168,10 @@ public class UserController {
 		}
 		userService.deleteUser(userId, session);
 		return null;
+	}
+	
+	public List<Address> getAllAddressByUserId(Long userId){
+		return userService.getAllAddressByUserId(userId);
 	}
 	
 }

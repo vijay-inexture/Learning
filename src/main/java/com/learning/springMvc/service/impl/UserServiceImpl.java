@@ -126,4 +126,9 @@ public class UserServiceImpl implements UserService {
 		userDao.deleteById(userId);
 	}
 
+	@Override
+	public List<Address> getAllAddressByUserId(Long userId) {
+		return addressDao.findAllByUserId(userId);
+	}
+
 }

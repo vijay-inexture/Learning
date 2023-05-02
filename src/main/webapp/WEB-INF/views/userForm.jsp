@@ -90,7 +90,7 @@
 					<th></th>
 					<th></th>
 				</tr>
-				<c:forEach items="${user.addresses}" var="address">
+				<c:forEach items="${addresses}" var="address">
 					<tr>
 						<td>${address.id}</td>
 						<td>${address.street}</td>
