@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,10 @@ public class LoginController {
 	}
 	
 	@PostMapping("/login")
-	public String login(@ModelAttribute Credential credential, HttpSession session) {
+	public String login(@Valid @ModelAttribute("credential") Credential credential, BindingResult result,  HttpSession session) {
+		if(result.hasErrors()) {
+			return "loginForm";
+		}
 		return loginService.login(credential, session);
 	}
 	
@@ -50,9 +54,14 @@ public class LoginController {
 	} 
 	
 	@PostMapping("/forgotPassword")
-	public ModelAndView forgotPassword(@Valid @ModelAttribute PasswordReset passwordRest) {
-		loginService.forgotPassword(passwordRest);
+	public ModelAndView forgotPassword(@Valid @ModelAttribute("passwordReset") PasswordReset passwordRest, BindingResult result) {
 		ModelAndView model = new ModelAndView();
+		if(result.hasErrors()) {
+			model.setViewName("forgotPasswordForm");
+			return model;
+		}
+		loginService.forgotPassword(passwordRest);
+		
 		model.setViewName("redirect:/login");
 		return model;
 	}

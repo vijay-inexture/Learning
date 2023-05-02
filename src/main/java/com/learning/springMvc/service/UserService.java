@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.learning.springMvc.dto.UserUpdateRequest;
 import com.learning.springMvc.model.User;
 
 
@@ -18,7 +19,7 @@ public interface UserService {
 
 	public User updateUserForm(Long userId, HttpSession session);
 
-	public User updateUser(User user,Long userId,  HttpSession session);
+	public User updateUser(UserUpdateRequest user,Long userId,  HttpSession session);
 
 	public void deleteUser(Long userId, HttpSession session);
 

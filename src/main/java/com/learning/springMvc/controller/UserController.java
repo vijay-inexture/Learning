@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.learning.springMvc.dto.UserUpdateRequest;
 import com.learning.springMvc.exception.UserAccessDeniedException;
 import com.learning.springMvc.model.User;
 import com.learning.springMvc.service.UserService;
@@ -33,12 +34,14 @@ public class UserController {
 	}
 	
 	@PostMapping("/users")
-	public ModelAndView createUser(@Valid @ModelAttribute  User user, BindingResult result) {
-		if (result.hasErrors()) {
-			throw new RuntimeException("Error in bean validate");
-		}
+	public ModelAndView createUser(@Valid @ModelAttribute("user")  User user, BindingResult result) {
 		ModelAndView model = new ModelAndView();
-
+		if (result.hasErrors()) {
+			model.setViewName("userForm");
+//			model.addObject("user", user);
+			return model;
+		}
+	
 		User userEntity = userService.createUser(user);
 		
 		model.setViewName("userStatus");
@@ -112,10 +115,17 @@ public class UserController {
 	}
 	
 	@PostMapping("/users/{userId}/updateUser")
-	public ModelAndView updateUser(@Valid @ModelAttribute  User user, @PathVariable("userId") Long userId, HttpSession session) {
+	public ModelAndView updateUser(@Valid @ModelAttribute  UserUpdateRequest user, BindingResult result, @PathVariable("userId") Long userId, HttpSession session) {
+		ModelAndView model = new ModelAndView();
+		if(result.hasErrors()) {
+			model.setViewName("userForm");
+			User userFromModel = (User) getUserById(userId, session).getModel().get("user");
+			model.addObject("user", userFromModel);
+			model.addObject("update", true);
+			return model;
+		}
 		//check session for login
 		User sessionUser =  (User) session.getAttribute("user");
-		ModelAndView model = new ModelAndView();
 		if(sessionUser==null) {
 			session.setAttribute("redirectUrl", "/users/"+userId+"/updateUser");
 			model.setViewName("redirect:/login");

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,11 +14,14 @@
 		  margin-left: 80%;
 		  margin-top: 10px;
 		}
+		.error {
+	        color: red; font-weight: bold;
+	    }
     </style>
 </head>
 <body>
 	<jsp:include page="fragments/header.jsp" /> 
-	<form action="forgotPassword" method="POST">
+	<form:form action="forgotPassword" method="POST" modelAttribute="passwordReset">
 	  <table>
 	  <thead>
             <tr>
@@ -30,21 +34,34 @@
 		    <tr>
 		      <td><label for="email">Email:</label></td>
 		      <td><input type="email" id="email" name="email" ></td>
-		      <td><span id="emailError" style="color: red; display: none;">Invalid email address</span></td>
+		    </tr>
+		    <tr>
+		    	<td></td>
+		    	<td><form:errors path="email" cssClass="error" /></td>
 		    </tr>
 		    <tr>
 		      <td><label for="password">Current Password:</label></td>
 		      <td><input type="password" id="password" name="password" ></td>
-		      <td><span id="emailError" style="color: red; display: none;">Invalid password</span></td>
+		    </tr>
+		    <tr>
+		    	<td></td>
+		    	<td><form:errors path="password" cssClass="error" /></td>
 		    </tr>
 		    <tr>
 		      <td><label for="new_password">New Password:</label></td>
 		      <td><input type="password" id="newPassword" name="newPassword" ></td>
 		    </tr>
 		    <tr>
+		    	<td></td>
+		    	<td><form:errors path="newPassword" cssClass="error" /></td>
+		    </tr>
+		    <tr>
 		      <td><label for="confirm_password">Confirm New Password:</label></td>
 		      <td><input type="password" id="confirmPassword" name="confirmPassword" ></td>
-		      <td><span id="emailError" style="color: red; display: none;">New Password not match with new Password</span></td>
+		    </tr>
+		    <tr>
+		    	<td></td>
+		    	<td><form:errors path="confirmPassword" cssClass="error" /></td>
 		    </tr>
 		    <tr>
 		    	<td><button id="resetBtn" type="submit">Reset Password</button></td>
@@ -52,7 +69,7 @@
 	    </tbody>
 	  </table>
   	
-</form>
+</form:form>
 </body>
 </html>
   

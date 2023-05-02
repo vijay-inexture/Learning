@@ -34,6 +34,7 @@
 	        	<c:if test="${not empty sessionScope.user}">
 	        		<ul>
 		        		<li><a href="/springMvc">Home</a></li>
+		        		<li><a href='/springMvc/users/${sessionScope.user.id}'>Profile</a></li>
 					    <li><a href="/springMvc/logout">Logout</a></li>
 					</ul>
 	        	</c:if>

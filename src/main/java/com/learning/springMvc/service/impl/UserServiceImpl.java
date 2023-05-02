@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.learning.springMvc.dao.AddressDao;
 import com.learning.springMvc.dao.UserDao;
+import com.learning.springMvc.dto.UserUpdateRequest;
 import com.learning.springMvc.exception.UserAccessDeniedException;
 import com.learning.springMvc.exception.UserAlreadyExistException;
 import com.learning.springMvc.exception.UserNotFoundException;
@@ -79,7 +80,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User updateUser(User user, Long userId, HttpSession session) {
+	public User updateUser(UserUpdateRequest user, Long userId, HttpSession session) {
 		//check if user exist with userId
 		User userEntity = userDao.findById(userId);
 		if(userEntity==null) {

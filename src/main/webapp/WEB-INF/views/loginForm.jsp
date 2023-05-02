@@ -1,4 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,10 +19,13 @@
             padding-top: 20px;
             margin-right: 0px;
         }
+        .error {
+	        color: red; font-weight: bold;
+	    }
     </style>
 </head>
 <body>
-    <form action="login" method="post">
+    <form:form action="login" method="post" modelAttribute="credential">
         <table>
             <thead>
                 <tr>
@@ -30,12 +35,18 @@
             <tbody>
                 <tr>
                     <td><label for="email">Email:</label></td>
-                    <td><input type="email" id="email" name="email"></td>
+                    <td><input type="text" name="email" /></td>
                 </tr>
                 <tr>
+                	<td></td>
+                	<td><form:errors path="email" cssClass="error" /></td></tr>
+                <tr>
                     <td><label for="password">Password:</label></td>
-                    <td><input type="password" id="password" name="password"></td>
+                    <td><input type="password" name="password" /></td>
                 </tr>
+                <tr>
+                	<td></td>
+                	<td><form:errors path="password" cssClass="error" /></td></tr>
                 <tr></tr>
                 <tr></tr>
                 <tr>
@@ -49,6 +60,6 @@
                 </tr>
             </tbody>
         </table>
-    </form>
+    </form:form>
 </body>
 </html>

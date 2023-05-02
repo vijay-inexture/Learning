@@ -1,6 +1,6 @@
 package com.learning.springMvc.model;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,9 +13,9 @@ public class Address {
 	@Id
 	@GeneratedValue
 	private Long id;
-	@NotNull
+	@NotEmpty(message = "Please enter Street")
 	private String street;
-	@NotNull
+	@NotEmpty(message = "Please enter City")
 	private String city;
 	
 	@ManyToOne

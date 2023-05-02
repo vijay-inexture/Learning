@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,7 +37,12 @@ public class AddressController {
 	}
 	
 	@PostMapping("/users/{userId}/address")
-	public ModelAndView createAddress(@Valid @ModelAttribute Address address, @PathVariable Long userId, HttpSession session) {
+	public ModelAndView createAddress(@Valid @ModelAttribute Address address,BindingResult result, @PathVariable Long userId, HttpSession session) {
+		ModelAndView model = new ModelAndView();
+		if(result.hasErrors()) {
+			model.setViewName("addressForm");
+			return model;
+		}
 		Object redirect = sessionUserValidate(userId, session);
 		if(redirect!=null) {
 			return (ModelAndView) redirect;
@@ -58,13 +64,18 @@ public class AddressController {
 		Address address = addressService.upadateUserAddressForm(userId, addressId, session);
 		
 		ModelAndView model = new ModelAndView();
-		model.setViewName("updateAddressForm");
+		model.setViewName("addressForm");
 		model.addObject("address", address);
 		return model;
 	}
 	
 	@PostMapping("/users/{userId}/address/{addressId}")
-	public ModelAndView updateUserAddress(@Valid @ModelAttribute Address address, @PathVariable Long userId, @PathVariable Long addressId,HttpSession session) {
+	public ModelAndView updateUserAddress(@Valid @ModelAttribute Address address,BindingResult result, @PathVariable Long userId, @PathVariable Long addressId,HttpSession session) {
+		ModelAndView model = new ModelAndView();
+		if(result.hasErrors()) {
+			model.setViewName("addressForm");
+			return model;
+		}
 		Object redirect = sessionUserValidate(userId, session);
 		if(redirect!=null) {
 			return (ModelAndView) redirect;

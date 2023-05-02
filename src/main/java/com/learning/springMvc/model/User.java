@@ -3,7 +3,7 @@ package com.learning.springMvc.model;
 import java.util.List;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -17,12 +17,12 @@ public class User {
 	@Id
 	@GeneratedValue
 	private Long id;
-	@NotNull
+	@NotEmpty(message = "Please enter Name")
 	private String name;
-	@NotNull
-	@Email
+	@NotEmpty(message = "Please enter Email")
+	@Email(message = "Please enter valid Email")
 	private String email;
-	@NotNull
+	@NotEmpty(message = "Please enter Password")
 	private String password;
 	private String role;
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)

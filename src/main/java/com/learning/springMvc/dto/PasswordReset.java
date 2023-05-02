@@ -1,17 +1,19 @@
 package com.learning.springMvc.dto;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class PasswordReset {
 	
-	@Email
+	@NotEmpty(message = "Please enter your Email")
+	@Email(message = "Please enter valid Email")
 	private String email;
-	@NotNull
+	@NotEmpty(message = "Please enter your Password")
 	private String password;
-	@NotNull
+	@NotEmpty(message = "Please enter your new Password")
 	private String newPassword;
-	@NotNull
+	@NotEmpty(message = "Confirm password must same as Password")
 	private String confirmPassword;
 	
 	public PasswordReset() {

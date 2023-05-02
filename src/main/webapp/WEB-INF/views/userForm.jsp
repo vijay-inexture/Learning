@@ -2,10 +2,11 @@
     pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>update User Details</title>
+    <title>User</title>
     <style>
         #createUser table {
             margin: 0 auto;
@@ -35,6 +36,9 @@
             margin-left: 50px;
             margin-top: 50px;
         }
+        .error {
+	        color: red; font-weight: bold;
+	    }
     </style>
 </head>
 <body>
@@ -43,7 +47,7 @@
     <c:if test="${update != null}">
 	<div id="userDetails">
 		<div>
-			<form action="" method="post">
+			<form:form action="" method="post" modelAttribute="user">
 				<table>
 					<thead>
 						<tr>
@@ -56,9 +60,17 @@
 							<td><input type="text" name="name" value="${user.name}"></td>
 						</tr>
 						<tr>
+			               	<td></td>
+			                <td><form:errors path="name" cssClass="error" /></td></tr>
+			            <tr>
+						<tr>
 							<td><label for="email">Email:</label></td>
 							<td><input type="email" name="email" value="${user.email}"></td>
 						</tr>
+						<tr>
+			               	<td></td>
+			                <td><form:errors path="email" cssClass="error" /></td></tr>
+			            <tr>
 						<tr></tr>
 						<tr></tr>
 						<tr>
@@ -66,7 +78,7 @@
 						</tr>
 					</tbody>
 				</table>
-			</form>
+			</form:form>
 		</div>
 		<div id="addresses">
 			<h1>Address List</h1>
@@ -114,11 +126,11 @@
 			<a href="<c:url value='/users/${user.id}/address'/>">Add New Address</a>
 		</div>
 	</div>
-</c:if>
+</c:if> 
     
 		<div id="createUser">
 		    <c:if test="${empty update}">
-		        <form action="users" method="post">
+		        <form:form action="users" method="post" modelAttribute="user">
 		            <table>
 		                <thead>
 		                    <tr>
@@ -127,28 +139,40 @@
 		                        </th>
 		                    </tr>
 		                </thead>
-		                <tbody>
+		                 <tbody>
 		                    <tr>
 		                        <td><label for="name">Name:</label></td>
-		                        <td><input type="text" name="name"/></td>
+		                        <td><input type="text" name="name" value="${user.name}"/></td>
 		                    </tr>
+		                    <tr>
+			                	<td></td>
+			                	<td><form:errors path="name" cssClass="error" /></td></tr>
+			                <tr>
 		                    <tr>
 		                        <td><label for="email">Email:</label></td>
-		                        <td><input type="email" id="email" name="email"></td>
+		                        <td><input type="email" id="email" name="email" value="${user.email}"></td>
 		                    </tr>
 		                    <tr>
+			                	<td></td>
+			                	<td><form:errors path="email" cssClass="error" /></td></tr>
+			                <tr>
+		                    <tr>
 		                        <td><label for="password">Password:</label></td>
-		                        <td><input type="password" id="password" name="password"></td>
+		                        <td><input type="password" id="password" name="password" value="${user.password}"></td>
 		                    </tr>
+		                    <tr>
+			                	<td></td>
+			                	<td><form:errors path="password" cssClass="error" /></td></tr>
+			                <tr>
 		                    <tr>
 		                        <td></td>
 		                        <td><button id="createBtn" type="submit">Create</button></td>
 		                    </tr>
 		                </tbody>
 		            </table>
-		        </form>
+		        </form:form>
 		    </c:if>
-		</div>
+		</div> 
 </div>
 </body>
 </html>
