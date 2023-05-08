@@ -2,6 +2,8 @@ package com.learning.springMvc.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import com.learning.springMvc.config.security.WebSecurityConfig;
+
 public class MyWebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override

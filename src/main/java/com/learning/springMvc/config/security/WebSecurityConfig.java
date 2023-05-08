@@ -1,4 +1,4 @@
-package com.learning.springMvc.config;
+package com.learning.springMvc.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,7 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+
+import com.learning.springMvc.config.security.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity//(debug=true)
@@ -53,7 +54,11 @@ public class WebSecurityConfig{
 						.failureUrl("/login?error=true")
 						.permitAll()
 					)
-					.logout((logout) -> logout.permitAll());
+					.logout((logout) -> logout
+			                .logoutUrl("/logout")
+			                .logoutSuccessUrl("/login?logout=true")
+			                .invalidateHttpSession(true)
+			                .deleteCookies("JSESSIONID").permitAll());
 			      return http.build();
 	}
 	

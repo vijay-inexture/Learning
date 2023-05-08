@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -30,21 +31,20 @@
 	</head>
 	<body>
 	    <header>
-	        <nav>
-	        	<c:if test="${not empty sessionScope.user}">
-	        		<ul>
-		        		<li><a href="/springMvc">Home</a></li>
-		        		<li><a href='/springMvc/users/${sessionScope.user.id}'>Profile</a></li>
-					    <li><a href="/springMvc/logout">Logout</a></li>
-					</ul>
-	        	</c:if>
-				<c:if test="${empty sessionScope.user}">
-					<ul>
-						<li><a href="/springMvc">Home</a></li>
-					   	<li><a href="/springMvc/login">Login</a></li>
-					</ul>
-				</c:if>
-	        </nav>
+	    	<nav>
+		        <ul>
+		            <li><a href="<c:url value="/"/>">Home</a></li>
+		            <sec:authorize access="!isAuthenticated()">
+		                <li><a href="<c:url value="/login"/>">Login</a></li>
+		            </sec:authorize>
+		            <sec:authorize access="isAuthenticated()">
+		                <li><a href="<c:url value="/logout" />" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+		            </sec:authorize>
+		        </ul>
+		    </nav>
+		    <form id="logout-form" action="<c:url value='/logout' />" method="post">
+		        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		    </form>
 	    </header>
 	</body>
 </html>
