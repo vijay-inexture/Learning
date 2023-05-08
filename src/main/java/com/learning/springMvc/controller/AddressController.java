@@ -1,9 +1,9 @@
 package com.learning.springMvc.controller;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.learning.springMvc.exception.UserAccessDeniedException;
 import com.learning.springMvc.model.Address;
 import com.learning.springMvc.model.User;
 import com.learning.springMvc.service.AddressService;
@@ -26,42 +25,30 @@ public class AddressController {
 	private AddressService addressService;
 	
 	@GetMapping("/users/{userId}/address")
-	public String createUserAddressForm(@PathVariable Long userId,HttpSession session){
-		User sessionUser =  (User) session.getAttribute("user");
-		if(sessionUser==null) {
-			session.setAttribute("redirectUrl", "/users/"+userId+"/addressForm");
-			return "redirect:/login";
-		}
+	public String createUserAddressForm(@PathVariable Long userId){
 		addressService.createUserAddressForm(userId);
 		return "addressForm";
 	}
 	
 	@PostMapping("/users/{userId}/address")
-	public ModelAndView createAddress(@Valid @ModelAttribute Address address,BindingResult result, @PathVariable Long userId, HttpSession session) {
+	@PreAuthorize("@userSecurity.adminAccess(authentication, #userId)")
+	public ModelAndView createAddress(@Valid @ModelAttribute Address address,BindingResult result, @PathVariable Long userId) {
 		ModelAndView model = new ModelAndView();
 		if(result.hasErrors()) {
 			model.setViewName("addressForm");
 			return model;
 		}
-		Object redirect = sessionUserValidate(userId, session);
-		if(redirect!=null) {
-			return (ModelAndView) redirect;
-		}
 		
-		User user = addressService.createAddress(address,userId, session);
+		User user = addressService.createAddress(address,userId);
 		
 		return commonResponse(user);
 	}
 	
 
 	@GetMapping("/users/{userId}/address/{addressId}")
-	public ModelAndView upadateUserAddressForm(@PathVariable Long userId,@PathVariable Long addressId,HttpSession session){
-		Object redirect = sessionUserValidate(userId, session);
-		if(redirect!=null) {
-			return (ModelAndView) redirect;
-		}
-		
-		Address address = addressService.upadateUserAddressForm(userId, addressId, session);
+	@PreAuthorize("@userSecurity.adminAccess(authentication, #userId)")
+	public ModelAndView upadateUserAddressForm(@PathVariable Long userId,@PathVariable Long addressId){		
+		Address address = addressService.upadateUserAddressForm(userId, addressId);
 		
 		ModelAndView model = new ModelAndView();
 		model.setViewName("addressForm");
@@ -70,47 +57,24 @@ public class AddressController {
 	}
 	
 	@PostMapping("/users/{userId}/address/{addressId}")
-	public ModelAndView updateUserAddress(@Valid @ModelAttribute Address address,BindingResult result, @PathVariable Long userId, @PathVariable Long addressId,HttpSession session) {
+	@PreAuthorize("@userSecurity.adminAccess(authentication, #userId)")
+	public ModelAndView updateUserAddress(@Valid @ModelAttribute Address address,BindingResult result, 
+			@PathVariable Long userId, @PathVariable Long addressId) {
 		ModelAndView model = new ModelAndView();
 		if(result.hasErrors()) {
 			model.setViewName("addressForm");
 			return model;
 		}
-		Object redirect = sessionUserValidate(userId, session);
-		if(redirect!=null) {
-			return (ModelAndView) redirect;
-		}
 		
-		User user = addressService.updateUserAddress(address, userId, addressId, session);
+		User user = addressService.updateUserAddress(address, userId, addressId);
 		
 		return commonResponse(user);	
 	}
 	
 	@DeleteMapping("/users/{userId}/address/{addressId}")
-	public ModelAndView deleteUserAddress(@PathVariable Long userId, @PathVariable Long addressId,HttpSession session) {
-		Object redirect = sessionUserValidate(userId, session);
-		if(redirect!=null) {
-			return (ModelAndView) redirect;
-		}
-		
-		addressService.deleteUserAddress(userId, addressId, session);
-		
-		return null;
-	}
-
-	private Object sessionUserValidate(Long userId, HttpSession session) {
-		User sessionUser =  (User) session.getAttribute("user");
-		ModelAndView model = new ModelAndView();
-		if(sessionUser==null) {
-			session.setAttribute("redirectUrl", "/users/"+userId+"/updateUser");
-			model.setViewName("redirect:/login");
-			return model;
-		}
-		
-		//check permission
-		if(!(sessionUser.getRole().equals("ADMIN") || sessionUser.getId().equals(userId))) {
-			throw new UserAccessDeniedException("Access Denied!");
-		}
+	@PreAuthorize("@userSecurity.adminAccess(authentication, #userId)")
+	public ModelAndView deleteUserAddress(@PathVariable Long userId, @PathVariable Long addressId) {		
+		addressService.deleteUserAddress(userId, addressId);
 		
 		return null;
 	}

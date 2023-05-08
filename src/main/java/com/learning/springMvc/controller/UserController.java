@@ -2,10 +2,11 @@ package com.learning.springMvc.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,19 +18,19 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.learning.springMvc.dto.UserUpdateRequest;
-import com.learning.springMvc.exception.UserAccessDeniedException;
 import com.learning.springMvc.model.Address;
 import com.learning.springMvc.model.User;
 import com.learning.springMvc.service.UserService;
 
 
 @Controller
+@EnableMethodSecurity
 public class UserController {
 	
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping("/userform")
+	@GetMapping("/createNew")
 	public String createUserForm() {
 		return "userForm";
 	}
@@ -39,7 +40,6 @@ public class UserController {
 		ModelAndView model = new ModelAndView();
 		if (result.hasErrors()) {
 			model.setViewName("userForm");
-//			model.addObject("user", user);
 			return model;
 		}
 	
@@ -51,20 +51,8 @@ public class UserController {
 	}
 
 	@GetMapping("/users")
-	public ModelAndView getAllUser(HttpSession session) {
-		//check session for login
-		User sessionUser =  (User) session.getAttribute("user");
+	public ModelAndView getAllUser() {
 		ModelAndView model = new ModelAndView();
-		if(sessionUser==null) {
-			session.setAttribute("redirectUrl", "/users");
-			model.setViewName("redirect:/login");
-			return model;
-		}
-		
-		//check permission
-		if(!sessionUser.getRole().equals("ADMIN")) {
-			throw new UserAccessDeniedException("Access Denied!");
-		}
 		
 		List<User> users = userService.getAllUser();
 		
@@ -74,20 +62,9 @@ public class UserController {
 	}
 	
 	@GetMapping("/users/{userId}")
-	public ModelAndView getUserById(@PathVariable("userId") Long userId,HttpSession session) {
-		//check session for login
-		User sessionUser =  (User) session.getAttribute("user");
+	@PreAuthorize("@userSecurity.userAccess(authentication, #userId)")
+	public ModelAndView getUserById(@PathVariable("userId") Long userId) {
 		ModelAndView model = new ModelAndView();
-		if(sessionUser==null) {
-			session.setAttribute("redirectUrl", "/users/"+userId);
-			model.setViewName("redirect:/login");
-			return model;
-		}
-		
-		//check permission
-		if(!(sessionUser.getRole().equals("ADMIN") || sessionUser.getId().equals(userId))){
-			throw new UserAccessDeniedException("Access Denied!");
-		}
 		
 		User user = userService.getUserById(userId);
 		
@@ -97,17 +74,11 @@ public class UserController {
 	}
 	
 	@GetMapping("/users/{userId}/updateUser")
-	public ModelAndView  updateUserForm(@PathVariable("userId") Long userId,HttpSession session) {
-		//check session for login
-		User sessionUser =  (User) session.getAttribute("user");
+	@PreAuthorize("@userSecurity.adminAccess(authentication, #userId)")
+	public ModelAndView  updateUserForm(@PathVariable("userId") Long userId) {
 		ModelAndView model = new ModelAndView();
-		if(sessionUser==null) {
-			session.setAttribute("redirectUrl", "/users/"+userId+"/updateUser");
-			model.setViewName("redirect:/login");
-			return model;
-		}
 		
-		User user = userService.updateUserForm(userId, session);
+		User user = userService.updateUserForm(userId);
 		
 		model.setViewName("userForm");
 		model.addObject("user", user);
@@ -117,7 +88,9 @@ public class UserController {
 	}
 	
 	@PostMapping("/users/{userId}/updateUser")
-	public ModelAndView updateUser(@Valid @ModelAttribute("user")  UserUpdateRequest user, BindingResult result, @PathVariable("userId") Long userId, HttpSession session) {
+	@PreAuthorize("@userSecurity.adminAccess(authentication, #userId)")
+	public ModelAndView updateUser(@Valid @ModelAttribute("user")  UserUpdateRequest user, 
+			BindingResult result, @PathVariable("userId") Long userId) {
 		ModelAndView model = new ModelAndView();
 		if(result.hasErrors()) {
 			List<Address> addresses = getAllAddressByUserId(userId);
@@ -128,20 +101,8 @@ public class UserController {
 			model.addObject("update", true);
 			return model;
 		}
-		//check session for login
-		User sessionUser =  (User) session.getAttribute("user");
-		if(sessionUser==null) {
-			session.setAttribute("redirectUrl", "/users/"+userId+"/updateUser");
-			model.setViewName("redirect:/login");
-			return model;
-		}
 		
-		//check user has access to update 
-		if(!(sessionUser.getRole().equals("ADMIN") || sessionUser.getId().equals(userId))){
-			throw new UserAccessDeniedException("Access Denied!");
-		}
-		
-		User userEntity = userService.updateUser(user, userId, session);
+		User userEntity = userService.updateUser(user, userId);
 		
 		model.setViewName("user");
 		model.addObject("user", userEntity);
@@ -152,21 +113,9 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/users/{userId}/deleteUser")
-	public ModelAndView deleteUser(@PathVariable("userId") Long userId,HttpSession session) {
-		//check session for login
-		User sessionUser =  (User) session.getAttribute("user");
-		ModelAndView model = new ModelAndView();
-		if(sessionUser==null) {
-			session.setAttribute("redirectUrl", "/users/"+userId);
-			model.setViewName("redirect:/login");
-			return model;
-		}
-		
-		//check user has access to delete 
-		if(!sessionUser.getRole().equals("ADMIN")){
-			throw new UserAccessDeniedException("Access Denied!");
-		}
-		userService.deleteUser(userId, session);
+	@PreAuthorize("@userSecurity.deleteAccess(authentication, #userId)")
+	public ModelAndView deleteUser(@PathVariable("userId") Long userId) {
+		userService.deleteUser(userId);
 		return null;
 	}
 	

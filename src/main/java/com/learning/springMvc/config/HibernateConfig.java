@@ -43,7 +43,8 @@ public class HibernateConfig {
       return dataSource;
   }
 
-  private Properties hibernateProperties() {
+  @Bean
+  public Properties hibernateProperties() {
       Properties properties = new Properties();
       properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
       properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
@@ -54,21 +55,9 @@ public class HibernateConfig {
   
   @Bean
   public HibernateTransactionManager getTransactionManager() {
-    HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-    transactionManager.setSessionFactory(getSessionFactory().getObject());
-    return transactionManager;
+	  HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+	  transactionManager.setSessionFactory(getSessionFactory().getObject());
+	  return transactionManager;
   }
   
-//  	@Bean
-//	public MessageSource messageSource() {
-//		ResourceBundleMessageSource source = new ResourceBundleMessageSource();
-//		source.setBasename("messages");
-//		return source;
-//	}
-//	 
-//	public Validator getValidator() {
-//		LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
-//	    validator.setValidationMessageSource(messageSource());
-//	    return validator;
-//	}
 }

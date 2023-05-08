@@ -6,11 +6,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.learning.springMvc.dao.UserDao;
-import com.learning.springMvc.model.Address;
 import com.learning.springMvc.model.User;
 
 @Repository
@@ -19,6 +19,9 @@ public class UserDaoImpl implements UserDao {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Override
 	public User findByEmail(String email) {
@@ -48,6 +51,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public void save(User user) {
 		Session currentSession = sessionFactory.getCurrentSession();
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		currentSession.persist(user);
 	}
 	
@@ -71,7 +75,7 @@ public class UserDaoImpl implements UserDao {
 	public void updatePassword(String email, String newPassword) {
 		Session currentSession = sessionFactory.getCurrentSession();
 		User user = findByEmail(email);
-		user.setPassword(newPassword);
+		user.setPassword(passwordEncoder.encode(newPassword));
 		currentSession.merge(user);
 	}
 

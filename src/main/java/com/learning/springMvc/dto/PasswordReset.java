@@ -13,7 +13,7 @@ public class PasswordReset {
 	private String password;
 	@NotEmpty(message = "Please enter your new Password")
 	private String newPassword;
-	@NotEmpty(message = "Confirm password must same as Password")
+	@NotEmpty(message = "Please enter Confirm Password")
 	private String confirmPassword;
 	
 	public PasswordReset() {

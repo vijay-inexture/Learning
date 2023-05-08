@@ -2,8 +2,6 @@ package com.learning.springMvc.service.impl;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +9,6 @@ import com.learning.springMvc.dao.AddressDao;
 import com.learning.springMvc.dao.UserDao;
 import com.learning.springMvc.dto.UserAddress;
 import com.learning.springMvc.exception.AddressNotFoundException;
-import com.learning.springMvc.exception.UserAccessDeniedException;
 import com.learning.springMvc.exception.UserNotFoundException;
 import com.learning.springMvc.model.Address;
 import com.learning.springMvc.model.User;
@@ -36,9 +33,9 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public User createAddress(Address address, Long userId, HttpSession session) {
-		//validate userId and admin not allow to update other admin details
-		User user = requestValidate(userId, null, session).getUser();
+	public User createAddress(Address address, Long userId) {
+		//validate userId
+		User user = requestValidate(userId, null).getUser();
 				
 		address.setUser(user);
 		addressDao.save(address);
@@ -47,17 +44,17 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public Address upadateUserAddressForm(Long userId, Long addressId, HttpSession session) {
-		//validate userId, addressId and admin not allow to update other admin details
-		Address address = requestValidate(userId, addressId, session).getAddress();
+	public Address upadateUserAddressForm(Long userId, Long addressId) {
+		//validate userId and addressId
+		Address address = requestValidate(userId, addressId).getAddress();
 				
 		return address;
 	}
 
 	@Override
-	public User updateUserAddress(Address address, Long userId, Long addressId,HttpSession session) {
-		//validate userId, addressId and admin not allow to update other admin details
-		UserAddress userAddress = requestValidate(userId, addressId, session);
+	public User updateUserAddress(Address address, Long userId, Long addressId) {
+		//validate userId and addressId
+		UserAddress userAddress = requestValidate(userId, addressId);
 		Address addressEntity = userAddress.getAddress();
 		User user = userAddress.getUser();
 		
@@ -69,27 +66,21 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public User deleteUserAddress(Long userId, Long addressId,HttpSession session) {
-		//validate userId,addressId and admin not allow to update other admin details
-		User user = requestValidate(userId, addressId, session).getUser();
+	public User deleteUserAddress(Long userId, Long addressId) {
+		//validate userId and addressId
+		User user = requestValidate(userId, addressId).getUser();
 		
 		addressDao.deleteById(addressId);
 		
 		return getUserWithAddresses(user);
 	}
 
-	private UserAddress requestValidate(Long userId, Long addressId, HttpSession session) {
+	private UserAddress requestValidate(Long userId, Long addressId) {
 		//check valid userId
 		User user = userDao.findById(userId);
 		if(user==null) {
 			throw new UserNotFoundException("User not found!");
 		}
-
-		//admin not allow to update other admin details
-		User sessionUser =  (User) session.getAttribute("user");
-		if(user.getRole().equals("ADMIN") && !sessionUser.getId().equals(user.getId())) {
-			throw new UserAccessDeniedException("Access Denied!");
-		}	
 		
 		UserAddress userAddress = new UserAddress();
 		

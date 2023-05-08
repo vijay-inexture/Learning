@@ -2,15 +2,12 @@ package com.learning.springMvc.service.impl;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.learning.springMvc.dao.AddressDao;
 import com.learning.springMvc.dao.UserDao;
 import com.learning.springMvc.dto.UserUpdateRequest;
-import com.learning.springMvc.exception.UserAccessDeniedException;
 import com.learning.springMvc.exception.UserAlreadyExistException;
 import com.learning.springMvc.exception.UserNotFoundException;
 import com.learning.springMvc.model.Address;
@@ -59,18 +56,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User updateUserForm(Long userId, HttpSession session) {
+	public User updateUserForm(Long userId) {
 		//check userId is valid
 		User user = userDao.findById(userId);
 		if(user==null) {
 			throw new UserNotFoundException("User not found!");
-		}
-		
-
-		//admin can not update other admin details
-		User sessionUser =  (User) session.getAttribute("user");
-		if(user.getRole().equals("ADMIN") && !sessionUser.getId().equals(user.getId())) {
-			throw new UserAccessDeniedException("Access Denied!");
 		}
 		
 		List<Address> addresses = addressDao.findAllByUserId(user.getId());
@@ -80,17 +70,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User updateUser(UserUpdateRequest user, Long userId, HttpSession session) {
+	public User updateUser(UserUpdateRequest user, Long userId) {
 		//check if user exist with userId
 		User userEntity = userDao.findById(userId);
 		if(userEntity==null) {
 			throw new UserNotFoundException("User not found!");
-		}
-		
-		//admin can not update other admin details
-		User sessionUser =  (User) session.getAttribute("user");
-		if(userEntity.getRole().equals("ADMIN") && !sessionUser.getId().equals(userEntity.getId())) {
-			throw new UserAccessDeniedException("Access Denied!");
 		}
 		
 		userEntity.setName(user.getName());
@@ -111,18 +95,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void deleteUser(Long userId, HttpSession session) {
+	public void deleteUser(Long userId) {
 		//check if user exist with userId
 		User userEntity = userDao.findById(userId);
 		if(userEntity==null) {
 			throw new UserNotFoundException("User not found!");
 		}
 
-		//admin can not delete other admin or self
-		if(userEntity.getRole().equals("ADMIN") && userEntity.getId().equals(userId)) {
-			throw new UserAccessDeniedException("Access Denied!");
-		}
-		
 		userDao.deleteById(userId);
 	}
 

@@ -2,9 +2,11 @@ package com.learning.springMvc.dao;
 
 import java.util.List;
 
-import com.learning.springMvc.model.Address;
+import org.springframework.stereotype.Component;
+
 import com.learning.springMvc.model.User;
 
+@Component
 public interface UserDao {
 	
 	public List<User> findAll();
